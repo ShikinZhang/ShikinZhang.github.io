@@ -7,13 +7,12 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>Test For formula | SK_Home</title>
+    <title>PD Controller Implement in Simulink | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="the Lorenz Equations:
-$$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y - xz \\dot{z} &amp;amp; = -\beta z + xy\\dot{z} &amp;amp; = x_x">
+    <meta name="description" content="PD Controller Implement in Simulink. It is very simple model so that if I forget how to build a PID controller system, I can use this model to build a">
     
     
     
@@ -75,15 +74,15 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/07/25/kalman_filter/" title="Test For formula" itemprop="url">Test For formula</a>
+      <a href="/2016/07/25/PD-Controller/" title="PD Controller Implement in Simulink" itemprop="url">PD Controller Implement in Simulink</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shikin.ga" title="Shikin">Shikin</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-07-24T16:22:54.000Z" itemprop="datePublished">2016-07-25</time>
-    更新日期:<time datetime="2016-07-24T17:37:57.767Z" itemprop="dateModified">2016-07-25</time>
+    <time datetime="2016-07-25T08:34:18.000Z" itemprop="datePublished">2016-07-25</time>
+    更新日期:<time datetime="2016-07-25T08:38:15.053Z" itemprop="dateModified">2016-07-25</time>
     
   </p>
 </header>
@@ -92,11 +91,33 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PID-Pseudo-Code"><span class="toc-number">1.</span> <span class="toc-text">PID Pseudo Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PD-model-in-Simulink"><span class="toc-number">2.</span> <span class="toc-text">PD model in Simulink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Not-Tested-Code"><span class="toc-number">3.</span> <span class="toc-text">Not Tested Code</span></a></li></ol>
 		</div>
 		
-		<p>the Lorenz Equations:</p>
-<p>$$<br>\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \<br>\dot{y} &amp; = \rho x - y - xz \<br>\dot{z} &amp; = -\beta z + xy\<br>\dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
+		<p>PD Controller Implement in Simulink. It is very simple model so that if I forget how to build a PID controller system, I can use this model to build a simple PID controller system.</p>
+<h2 id="PID-Pseudo-Code"><a href="#PID-Pseudo-Code" class="headerlink" title="PID Pseudo Code"></a>PID Pseudo Code</h2><p><img src="http://a1.qpic.cn/psb?/V118uAby40NSw2/KfjbgZaELXkM*sTvMAFItL0WEM0m74sSw6QtqRSUCE4!/b/dAsBAAAAAAAA&amp;bo=ZgOIAQAAAAAFB8g!&amp;rf=viewer_4" alt=""></p>
+<p>The parameters Kp, Ki and Kd can be calculated by Simulink.</p>
+<p>In this guide, We implement a PD Controller, so we only need concentrate on Kp and Kd</p>
+<h2 id="PD-model-in-Simulink"><a href="#PD-model-in-Simulink" class="headerlink" title="PD model in Simulink"></a>PD model in Simulink</h2><p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/pvyZ.JuwtQ*dr*VKpW7cHALHFTdjxtuDDJsK4aRqB4g!/b/dA0BAAAAAAAA&amp;bo=9gOAAgAAAAAFAFQ!&amp;rf=viewer_4" alt=""><br>Here is the model in Simulink. you can find every block in Simulink and add it to model. The block Zere-Order Hold and Intergrator are only used to get the measured position, so in Robot model, these two blocks are not really exist.</p>
+<p>Then we must unify the sample time. (The block Delay, PD controller and Zero-Order Hold)</p>
+<p>The feedback signal is position. As for Velocity feedback, it is the derivative of position and generated in PD controller block.</p>
+<hr>
+<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/JDEyHeNGpLvMRtyeLjY2qFm93*0HdbFe5CHrfvrKXmc!/b/dAwBAAAAAAAA&amp;bo=6AKAAgAAAAAFAEs!&amp;rf=viewer_4" alt=""></p>
+<p>Here is the Signal Builder which generates the simulation signal for desired position.</p>
+<hr>
+<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/tYZ0ygVeOx9S.aRTDenO*Yp4yTP6lVGtmm8XntoUS5s!/b/dAwBAAAAAAAA&amp;bo=xgKAAgAAAAAFAGU!&amp;rf=viewer_4" alt=""></p>
+<p>Here is the configuration of PD controller</p>
+<p>‘Controller’ is selected as PD. ‘Sample time’ is set as 0.001. Then you need click ‘Apply’ button so that you can click ‘Tune…’ button for next interface.</p>
+<hr>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/RQYcWaq*aZ1q54EABaYip9PDliuN65zqsS6x02CkrFw!/b/dA0BAAAAAAAA&amp;bo=YQOAAgAAAAAFAMM!&amp;rf=viewer_4" alt=""></p>
+<p>Here is the PID Tuner.</p>
+<p>In this interface, you can set proper ‘Respose Time’ and click ‘Update Block’ button if you are satisfied with the curve. By the way, you can click ‘Show Parameters’ button to see the parameters here and of course you can see the parameters in PD controller configuration.</p>
+<p>##Simulation Result<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/Xkozqny8cPOxbwtnbdG7dNcw6oHxXPM8zMVs0MnNwhs!/b/dA0BAAAAAAAA&amp;bo=WwSAAgAAAAAFAP4!&amp;rf=viewer_4" alt=""></p>
+<p>The 1st diagram is the Disired position</p>
+<p>The 2nd diagram is the Measured position</p>
+<p>The 3rd diagram is the Velocity</p>
+<p>THe 4th diagram is the Velocity error</p>
+<h2 id="Not-Tested-Code"><a href="#Not-Tested-Code" class="headerlink" title="Not Tested Code"></a>Not Tested Code</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> p_m,p_d;							<span class="comment">// input</span></div><div class="line"><span class="keyword">float</span> err,err_delay,kp,kd,v,v_delay;	<span class="comment">// process</span></div><div class="line"><span class="keyword">float</span> v_err								<span class="comment">// output</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Timer_Handler</span><span class="params">()</span> 					<span class="comment">// timer handler function in MCU and it just ensures the Sample time is 1ms</span></span></div><div class="line">&#123;</div><div class="line">	p_m = get_position();							<span class="comment">// get the measured position</span></div><div class="line">	err_delay = err;								<span class="comment">// get error delay</span></div><div class="line">	err = p_d - p_m;								<span class="comment">// get error</span></div><div class="line">	v_delay = v;									<span class="comment">// get velocity delay</span></div><div class="line">	v = kp*err + kd * (err-err_delay)/<span class="number">0.001</span>;		<span class="comment">// calculate the velocity and 0.001 is the sample time</span></div><div class="line">	v_err = v - v_delay;							<span class="comment">// calculate the velocity error</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -104,14 +125,14 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/MicroMouse/">MicroMouse</a>
+  <a class="article-category-link" href="/categories/PID-learning/">PID learning</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2016/07/25/kalman_filter/" data-title="Test For formula | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2016/07/25/PD-Controller/" data-title="PD Controller Implement in Simulink | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -120,19 +141,11 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/07/25/PD-Controller/" title="PD Controller Implement in Simulink">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  PD Controller Implement in Simulink</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/07/21/hello/"  title="lsm9ds1陀螺仪寄存器的配置">
+<a href="/2016/07/25/kalman_filter/"  title="Test For formula">
  <strong>NEXT:</strong><br/> 
- <span>lsm9ds1陀螺仪寄存器的配置
+ <span>Test For formula
 </span>
 </a>
 </div>
@@ -142,7 +155,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="Test For formula" data-thread-key="kalman_filter" data-author-key="Shikin" data-url="http://shikin.ga/post/kalman_filter"></div>
+	<div class="ds-thread" data-title="PD Controller Implement in Simulink" data-thread-key="PD-Controller" data-author-key="Shikin" data-url="http://shikin.ga/post/PD-Controller"></div>
 	
 </section>
 
@@ -152,7 +165,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\dot{y} &amp;amp; = \rho x - y
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#PID-Pseudo-Code"><span class="toc-number">1.</span> <span class="toc-text">PID Pseudo Code</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PD-model-in-Simulink"><span class="toc-number">2.</span> <span class="toc-text">PD model in Simulink</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Not-Tested-Code"><span class="toc-number">3.</span> <span class="toc-text">Not Tested Code</span></a></li></ol>
   </div>
 
 <div id="asidepart">
