@@ -7,14 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>Test For formula | SK_Home</title>
+    <title>卡尔曼滤波器 | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="the Lorenz Equations:
-$$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - y - xz \\\dot{z} &amp;amp; = -\beta z + xy\\\end{aligned}$$
-">
+    <meta name="description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
+卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp;= F\hat{x}{t-1} + Bu_t \pt^-&amp;amp;=Fp{t-1}F^T+Q \\hat{x}_t&amp;amp;=\hat{x}_t^- + K">
     
     
     
@@ -76,7 +75,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/07/25/kalman_filter/" title="Test For formula" itemprop="url">Test For formula</a>
+      <a href="/2016/07/25/kalman_filter/" title="卡尔曼滤波器" itemprop="url">卡尔曼滤波器</a>
   </h1>
   <p class="article-author">By
     
@@ -84,7 +83,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
     </p>
   <p class="article-time">
     <time datetime="2016-07-24T16:22:54.000Z" itemprop="datePublished">2016-07-25</time>
-    更新日期:<time datetime="2016-07-25T08:44:44.126Z" itemprop="dateModified">2016-07-25</time>
+    更新日期:<time datetime="2016-07-26T07:10:46.207Z" itemprop="dateModified">2016-07-26</time>
     
   </p>
 </header>
@@ -93,11 +92,12 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li></ol>
 		</div>
 		
-		<p>the Lorenz Equations:</p>
-<p>$$<br>\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy\\<br>\end{aligned}<br>$$</p>
+		<p>卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。</p>
+<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}<br>\hat{x}<em>t^- &amp;= F\hat{x}</em>{t-1} + Bu_t \<br>p<em>t^-&amp;=Fp</em>{t-1}F^T+Q \<br>\hat{x}_t&amp;=\hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-)\<br>K_t&amp;=P_t^-H^T(HP_t^-H^T+R)^{-1} \<br>P_t&amp;=(I-K_tH)P_t^-\<br>\end{align}<br>$$</p>
+<p>$$<br>\begin{align}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy\\<br>\end{align}<br>$$</p>
 <p>$$<br>\begin{aligned}<br>    \dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
   
 	</div>
@@ -113,7 +113,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2016/07/25/kalman_filter/" data-title="Test For formula | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2016/07/25/kalman_filter/" data-title="卡尔曼滤波器 | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -144,7 +144,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="Test For formula" data-thread-key="kalman_filter" data-author-key="Shikin" data-url="http://shikin.ga/post/kalman_filter"></div>
+	<div class="ds-thread" data-title="卡尔曼滤波器" data-thread-key="kalman_filter" data-author-key="Shikin" data-url="http://shikin.ga/post/kalman_filter"></div>
 	
 </section>
 
@@ -154,7 +154,7 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li></ol>
   </div>
 
 <div id="asidepart">
@@ -181,6 +181,8 @@ $$\begin{aligned}\dot{x} &amp;amp; = \sigma(y-x) \\\dot{y} &amp;amp; = \rho x - 
 		<ul>
 		
 			<li><a href="/categories/MicroMouse/" title="MicroMouse">MicroMouse<sup>2</sup></a></li>
+		
+			<li><a href="/categories/MircroMouse/" title="MircroMouse">MircroMouse<sup>1</sup></a></li>
 		
 			<li><a href="/categories/PID-learning/" title="PID learning">PID learning<sup>1</sup></a></li>
 		
