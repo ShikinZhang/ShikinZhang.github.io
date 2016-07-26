@@ -13,7 +13,8 @@
     <meta name="author" content="Shikin">
     
     <meta name="description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
-卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \\pt^-       &amp;amp; = Fp{t-1}F^T+Q \\\hat{x}_t   &amp;amp; ">
+卡尔曼滤波器公式$$\begin{align}
+\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \\pt^-       &amp;amp; = Fp{t-1}F^T+Q \\\hat{x}_t   &amp;amp;">
     
     
     
@@ -83,7 +84,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-07-24T16:22:54.000Z" itemprop="datePublished">2016-07-25</time>
-    更新日期:<time datetime="2016-07-26T09:30:32.173Z" itemprop="dateModified">2016-07-26</time>
+    更新日期:<time datetime="2016-07-26T09:32:52.675Z" itemprop="dateModified">2016-07-26</time>
     
   </p>
 </header>
@@ -96,8 +97,9 @@
 		</div>
 		
 		<p>卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。</p>
-<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}<br>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \\<br>p<em>t^-       &amp; = Fp</em>{t-1}F^T+Q \\<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \\<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \\<br>P_t         &amp; = (I-K_tH)P_t^- \<br>\end{align}<br>$$</p>
-<p>$$<br>\begin{align}<br>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy \<br>\end{align}<br>$$</p>
+<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}</p>
+<p>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \\<br>p<em>t^-       &amp; = Fp</em>{t-1}F^T+Q \\<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \\<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \\<br>P_t         &amp; = (I-K_tH)P_t^- \\</p>
+<p>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy \<br>\end{align}<br>$$</p>
 <p>$$<br>\begin{aligned}<br>    \dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
   
 	</div>
