@@ -83,7 +83,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-07-26T07:11:40.000Z" itemprop="datePublished">2016-07-26</time>
-    更新日期:<time datetime="2016-07-26T09:13:31.542Z" itemprop="dateModified">2016-07-26</time>
+    更新日期:<time datetime="2016-07-26T09:19:04.227Z" itemprop="dateModified">2016-07-26</time>
     
   </p>
 </header>
@@ -98,7 +98,7 @@
 		<p>在MATLAB的Simulink下的直流电机模型与简介。</p>
 <h1 id="电学模型"><a href="#电学模型" class="headerlink" title="电学模型"></a>电学模型</h1><h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>$$<br>\begin{align}<br>i(t) &amp;= C\cfrac{du}{dt}\\<br>u(t) &amp;= L\cfrac{di}{dt}\<br>\end{align}<br>$$<br>公式 (1) 是电容器件与所加电压和流过的电流的关系<br><br>公式 (2) 是电感器件与所加电压和流过的电流的关系<br></p>
 <p>##电机电学模型<br>电机是电感型的器件，所以对应的是公式(2)<br><br>并且控制输入的电压值所以需要进行公式变形<br><br>将公式(2)进行变形，写成积分的形式如下<br><br>$$<br>\begin{align}<br>i(t) = \cfrac{1}{L}\int{}u(t)dt\<br>\end{align}<br>$$<br>将公式 (3) 所表示的内容在Simulink中实现如下图</p>
-<p><img src="file://D:/forkasin/motor/01.png" alt=""> <br></p>
+<p><img src="file://D:/forkasin/motor/01.png" alt=""> <br> </p>
 <p>输入的电压乘以电感的倒数然后积分得到电流。<br></p>
 <h2 id="电机模型的修正"><a href="#电机模型的修正" class="headerlink" title="电机模型的修正"></a>电机模型的修正</h2><p>由于电感实际上也是有电阻的<br><br>那么在模型中真正用于积分的电压需要减去电阻分去的电压<br>因此模型电学模型修正如下图<br><img src="file://D:/forkasin/motor/02.png" alt=""> <br><br>电感电阻的分压由电流乘以电阻得到。<br><br>那么电学的模型在此可以告一段落了，接下来介绍力学的模型。</p>
 <h1 id="力学模型"><a href="#力学模型" class="headerlink" title="力学模型"></a>力学模型</h1><h2 id="基本介绍-1"><a href="#基本介绍-1" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>角加速度，转动惯量，扭矩的关系如公式(4)所示<br>$$<br>\begin{align}<br>T = J\beta<br>\end{align}<br>$$<br>其中T是扭矩，J是转动惯量，β是角加速度。<br></p>
