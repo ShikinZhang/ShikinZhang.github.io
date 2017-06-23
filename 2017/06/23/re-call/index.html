@@ -7,13 +7,16 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>电机模型在Simulink中的实现 | SK_Home</title>
+    <title>re-call | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="在MATLAB的Simulink下的直流电机模型与简介。
-电学模型基本介绍$$\begin{align}i(t) &amp;amp;= C\cfrac{du}{dt}\\u(t) &amp;amp;= L\cfrac{di}{dt}\\end{align}$$公式 (1) 是电容器件与所加电压和流过的电流的关系公式">
+    <meta name="description" content="回忆如何用hexo在blog/source/_post 路径下
+右键点击选择 Git Bash Here
+然后输入 hexo new re-call [re-call 为title的名字]
+于是在blog/source/_post 中生成了一个re-call.md的文件之后直接编辑即可
+然后就是he">
     
     
     
@@ -75,15 +78,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/07/26/motor-model/" title="电机模型在Simulink中的实现" itemprop="url">电机模型在Simulink中的实现</a>
+      <a href="/2017/06/23/re-call/" title="re-call" itemprop="url">re-call</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shikin.ga" title="Shikin">Shikin</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-07-26T07:11:40.000Z" itemprop="datePublished">2016-07-26</time>
-    更新日期:<time datetime="2016-07-26T09:37:54.280Z" itemprop="dateModified">2016-07-26</time>
+    <time datetime="2017-06-23T01:56:44.000Z" itemprop="datePublished">2017-06-23</time>
+    更新日期:<time datetime="2017-06-23T02:09:39.433Z" itemprop="dateModified">2017-06-23</time>
     
   </p>
 </header>
@@ -92,23 +95,14 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#电学模型"><span class="toc-number">1.</span> <span class="toc-text">电学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍"><span class="toc-number">1.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机电学模型"><span class="toc-number">1.2.</span> <span class="toc-text">电机电学模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机模型的修正"><span class="toc-number">1.3.</span> <span class="toc-text">电机模型的修正</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#力学模型"><span class="toc-number">2.</span> <span class="toc-text">力学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍-1"><span class="toc-number">2.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机力学模型"><span class="toc-number">2.2.</span> <span class="toc-text">电机力学模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机力学模型修正"><span class="toc-number">2.3.</span> <span class="toc-text">电机力学模型修正</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电机模型"><span class="toc-number">3.</span> <span class="toc-text">电机模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍-2"><span class="toc-number">3.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模型合并"><span class="toc-number">3.2.</span> <span class="toc-text">模型合并</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#回忆如何用hexo"><span class="toc-number">1.</span> <span class="toc-text">回忆如何用hexo</span></a></li></ol>
 		</div>
 		
-		<p>在MATLAB的Simulink下的直流电机模型与简介。</p>
-<h2 id="电学模型"><a href="#电学模型" class="headerlink" title="电学模型"></a>电学模型</h2><h3 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>$$<br>\begin{align}<br>i(t) &amp;= C\cfrac{du}{dt}\\<br>u(t) &amp;= L\cfrac{di}{dt}\<br>\end{align}<br>$$<br>公式 (1) 是电容器件与所加电压和流过的电流的关系<br><br>公式 (2) 是电感器件与所加电压和流过的电流的关系<br></p>
-<h3 id="电机电学模型"><a href="#电机电学模型" class="headerlink" title="电机电学模型"></a>电机电学模型</h3><p>电机是电感型的器件，所以对应的是公式(2)<br><br>并且控制输入的电压值所以需要进行公式变形<br><br>将公式(2)进行变形，写成积分的形式如下<br><br>$$<br>\begin{align}<br>i(t) = \cfrac{1}{L}\int{}u(t)dt\<br>\end{align}<br>$$<br>将公式 (3) 所表示的内容在Simulink中实现如下图</p>
-<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/MFpd6REBRZyLWfEwk5TkXH1tE1N1nPsduJfrOmMrrKU!/b/dI0BAAAAAAAA&amp;bo=uQRQAQAAAAADB84!&amp;rf=viewer_4" alt=""> <br> </p>
-<p>输入的电压乘以电感的倒数然后积分得到电流。<br></p>
-<h3 id="电机模型的修正"><a href="#电机模型的修正" class="headerlink" title="电机模型的修正"></a>电机模型的修正</h3><p>由于电感实际上也是有电阻的<br><br>那么在模型中真正用于积分的电压需要减去电阻分去的电压<br>因此模型电学模型修正如下图<br><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/CJYcEQnq3pF0rsThpNdkKL2DkFJ0U2sRMakpIeiMBOM!/b/dG8BAAAAAAAA&amp;bo=wQN6AQAAAAADAJw!&amp;rf=viewer_4" alt=""> <br><br>电感电阻的分压由电流乘以电阻得到。<br><br>那么电学的模型在此可以告一段落了，接下来介绍力学的模型。</p>
-<h2 id="力学模型"><a href="#力学模型" class="headerlink" title="力学模型"></a>力学模型</h2><h3 id="基本介绍-1"><a href="#基本介绍-1" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>角加速度，转动惯量，扭矩的关系如公式(4)所示<br>$$<br>\begin{align}<br>T = J\beta<br>\end{align}<br>$$<br>其中T是扭矩，J是转动惯量，β是角加速度。<br></p>
-<h3 id="电机力学模型"><a href="#电机力学模型" class="headerlink" title="电机力学模型"></a>电机力学模型</h3><p>角加速度的积分得到角速度，也就是得到转速，则公式变为</p>
-<p>$$<br>\begin{align}<br>\omega = \cfrac{1}{J}\int{}Tdt<br>\end{align}<br>$$</p>
-<p>公式 (5) 在Simulink模型中实现如图<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/gPQf4ESy1gCHbsQe9*5y9H71fuwxxAbA3vfK10STaTQ!/b/dA0BAAAAAAAA&amp;bo=owO8AAAAAAADADk!&amp;rf=viewer_4" alt=""> <br></p>
-<h3 id="电机力学模型修正"><a href="#电机力学模型修正" class="headerlink" title="电机力学模型修正"></a>电机力学模型修正</h3><p>在真实中<br><br>电机旋转时存在一定的阻尼,存在一个扭矩，且该扭矩与转速成正比<br><br>电机也存在负载，因此存在一个负载的扭矩<br><br>因此对上述模型需要进行修正<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/3BEsPzmXoC8Cwna6WxWJwAMZmFEz8FW6WrFB3nd4K*s!/b/dNoAAAAAAAAA&amp;bo=oAPoAQAAAAADAG8!&amp;rf=viewer_4" alt=""> <br><br>电机的输入的扭矩需要减去负载的扭矩和阻尼所产生的扭矩<br></p>
-<h2 id="电机模型"><a href="#电机模型" class="headerlink" title="电机模型"></a>电机模型</h2><h3 id="基本介绍-2"><a href="#基本介绍-2" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>电机产生的扭矩与电流成正比<br><br>电机旋转之后存在一个反向电动势，于转速成正比<br><br>用公式表示如下<br>$$<br>\begin{align}<br>E &amp;= K_e \omega\\<br>T &amp;= K_m I<br>\end{align}<br>$$<br>其中E为反向电动势，T为电机的扭矩</p>
-<h3 id="模型合并"><a href="#模型合并" class="headerlink" title="模型合并"></a>模型合并</h3><p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/E1vpD9dhH0dV8.HMIV0HKKXydjDNgescw5Wz8kRNuNw!/b/dOMAAAAAAAAA&amp;bo=.wTbAQAAAAADAAA!&amp;rf=viewer_4" alt=""> <br></p>
-<p>左边部分为电学量，右边部分为力学量。<br><br>电学量与力学量之间由系数Ke和Km进行转换。<br><br>就此得到完整的电机模型。<br><br><br><br>具体的系数需要参考电机的手册以及进行测量得到。</p>
+		<h2 id="回忆如何用hexo"><a href="#回忆如何用hexo" class="headerlink" title="回忆如何用hexo"></a>回忆如何用hexo</h2><p>在blog/source/_post 路径下</p>
+<p>右键点击选择 Git Bash Here</p>
+<p>然后输入 hexo new re-call [re-call 为title的名字]</p>
+<p>于是在blog/source/_post 中生成了一个re-call.md的文件之后直接编辑即可</p>
+<p>然后就是hexo g和hexo d</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -116,14 +110,14 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/MicroMouse/">MicroMouse</a>
+  <a class="article-category-link" href="/categories/recall/">recall</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2016/07/26/motor-model/" data-title="电机模型在Simulink中的实现 | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2017/06/23/re-call/" data-title="re-call | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -132,19 +126,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/06/23/re-call/" title="re-call">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  re-call</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/07/25/PD-Controller/"  title="PD Controller Implement in Simulink">
+<a href="/2016/07/26/motor-model/"  title="电机模型在Simulink中的实现">
  <strong>NEXT:</strong><br/> 
- <span>PD Controller Implement in Simulink
+ <span>电机模型在Simulink中的实现
 </span>
 </a>
 </div>
@@ -154,7 +140,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="电机模型在Simulink中的实现" data-thread-key="motor-model" data-author-key="Shikin" data-url="http://shikin.ga/post/motor-model"></div>
+	<div class="ds-thread" data-title="re-call" data-thread-key="re-call" data-author-key="Shikin" data-url="http://shikin.ga/post/re-call"></div>
 	
 </section>
 
@@ -164,7 +150,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#电学模型"><span class="toc-number">1.</span> <span class="toc-text">电学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍"><span class="toc-number">1.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机电学模型"><span class="toc-number">1.2.</span> <span class="toc-text">电机电学模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机模型的修正"><span class="toc-number">1.3.</span> <span class="toc-text">电机模型的修正</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#力学模型"><span class="toc-number">2.</span> <span class="toc-text">力学模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍-1"><span class="toc-number">2.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机力学模型"><span class="toc-number">2.2.</span> <span class="toc-text">电机力学模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#电机力学模型修正"><span class="toc-number">2.3.</span> <span class="toc-text">电机力学模型修正</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#电机模型"><span class="toc-number">3.</span> <span class="toc-text">电机模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#基本介绍-2"><span class="toc-number">3.1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模型合并"><span class="toc-number">3.2.</span> <span class="toc-text">模型合并</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#回忆如何用hexo"><span class="toc-number">1.</span> <span class="toc-text">回忆如何用hexo</span></a></li></ol>
   </div>
 
 <div id="asidepart">

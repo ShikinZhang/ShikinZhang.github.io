@@ -13,8 +13,7 @@
     <meta name="author" content="Shikin">
     
     <meta name="description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
-卡尔曼滤波器公式$$\begin{align}
-\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \\pt^-       &amp;amp; = Fp{t-1}F^T+Q \\\hat{x}_t   &amp;amp;">
+卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \pt^-       &amp;amp; = FP{t-1}F^T+Q \\hat{x}_t   &amp;amp; = ">
     
     
     
@@ -84,7 +83,7 @@
     </p>
   <p class="article-time">
     <time datetime="2016-07-24T16:22:54.000Z" itemprop="datePublished">2016-07-25</time>
-    更新日期:<time datetime="2016-07-26T09:35:13.095Z" itemprop="dateModified">2016-07-26</time>
+    更新日期:<time datetime="2016-07-31T05:07:06.394Z" itemprop="dateModified">2016-07-31</time>
     
   </p>
 </header>
@@ -93,14 +92,25 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单小车运动模型"><span class="toc-number">2.</span> <span class="toc-text">简单小车运动模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#运动学公式"><span class="toc-number">2.1.</span> <span class="toc-text">运动学公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声"><span class="toc-number">2.2.</span> <span class="toc-text">噪声</span></a></li></ol></li></ol>
 		</div>
 		
 		<p>卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。</p>
-<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}</p>
-<p>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \\<br>p<em>t^-       &amp; = Fp</em>{t-1}F^T+Q \\<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \\<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \\<br>P_t         &amp; = (I-K_tH)P_t^- \\</p>
-<p>\dot{x} &amp; = \sigma(y-x) \\<br>\dot{y} &amp; = \rho x - y - xz \\<br>\dot{z} &amp; = -\beta z + xy \<br>\end{align}<br>$$</p>
-<p>$$<br>\begin{aligned}<br>    \dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
+<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}<br>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \<br>p<em>t^-       &amp; = FP</em>{t-1}F^T+Q \<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \<br>P_t         &amp; = (I-K_tH)P_t^-<br>\end{align}<br>$$</p>
+<h2 id="简单小车运动模型"><a href="#简单小车运动模型" class="headerlink" title="简单小车运动模型"></a>简单小车运动模型</h2><h3 id="运动学公式"><a href="#运动学公式" class="headerlink" title="运动学公式"></a>运动学公式</h3><p>假设小车在路上行驶，其状态用<br>$$<br>\begin{align}<br>    \hat{x}_{t-1}^- = [\begin{matrix} p \ v \end{matrix}]<br>\end{align}<br>$$<br>p是小车在t-1时刻的位置，v是小车在t-1时刻的速度。<br><br><br>在不考虑状态量$u_t$的情况下，下一时刻状态为<br>$$<br>\begin{align}<br>    \hat{x}<em>t^-=F\cdot \hat{x}</em>{t-1}^-<br>\end{align}<br>$$</p>
+<p>其中F为状态转移矩阵，在该模型中，F为</p>
+<p>$$<br>\begin{align}<br>    F = [\begin{matrix} 1 &amp; \Delta t \ 0 &amp; 1 \end{matrix}]<br>\end{align}<br>$$</p>
+<p>在考虑状态量$u_t$的情况下，得到卡尔曼滤波器的第一个公式</p>
+<p>$$<br>\begin{align}<br>    \hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t<br>\end{align}<br>$$</p>
+<p>在该模型中，我们假设这个控制量为加速度，则矩阵B可以表示为</p>
+<p>$$<br>\begin{align}<br>    B = [\begin{matrix} \cfrac{1}{2}\Delta t^2 \ \Delta t \end{matrix}]<br>\end{align}<br>$$</p>
+<p>这样我们得到运动学公式</p>
+<h3 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h3><p>在这里，我们假设的噪声都是高斯分布的噪声，其方差为$\sigma $。<br><br>在该模型中协方差矩阵为</p>
+<p>$$<br>\begin{align}<br>    P<em>{t-1} =[<br>    \begin{matrix}<br>        \sigma </em>{11} &amp;\sigma <em>{12}\<br>        \sigma </em>{21} &amp;\sigma _{22}<br>    \end{matrix}]<br>\end{align}<br>$$</p>
+<p>这里正对角系数 $\sigma <em>{11}$ 和 $\sigma </em>{22}$ 分别为位置和速度的测量噪声的方差。</p>
+<p>反对角系数 $\sigma <em>{12} = \sigma </em>{21}$ 为噪声的相关性</p>
+<p><br><br><br><br><br><br><br><br><br><br><br><br></p>
+<p>$$<br>\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \<br>\dot{y} &amp; = \rho x - y - xz \<br>\dot{z} &amp; = -\beta z + xy \<br>    \dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -156,7 +166,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#卡尔曼滤波器公式"><span class="toc-number">1.</span> <span class="toc-text">卡尔曼滤波器公式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#简单小车运动模型"><span class="toc-number">2.</span> <span class="toc-text">简单小车运动模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#运动学公式"><span class="toc-number">2.1.</span> <span class="toc-text">运动学公式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#噪声"><span class="toc-number">2.2.</span> <span class="toc-text">噪声</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
@@ -186,6 +196,8 @@
 		
 			<li><a href="/categories/PID-learning/" title="PID learning">PID learning<sup>1</sup></a></li>
 		
+			<li><a href="/categories/recall/" title="recall">recall<sup>1</sup></a></li>
+		
 		</ul>
 </div>
 
@@ -212,7 +224,7 @@
     </div>
     <footer><div id="footer" >
     
-            <p class="copyright"> © 2016 
+            <p class="copyright"> © 2017 
 		
 		<a href="http://shikin.ga" target="_blank" title="Shikin">Shikin</a>
 		
