@@ -7,24 +7,20 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>lsm9ds1陀螺仪寄存器的配置 | SK_Home</title>
+    <title>windos环境下搭建python+opencv | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="配置用于MicroMouse的陀螺仪。
+    <meta name="description" content="本人用的是python-2.7.13 + numpy-1.10.2 + opencv-3.2.0
+可以点击找到下载地址
+python
+numpy
+opencv
+###python 安装
+下载安装完成python之后，打开IDLE可以看到安装的版本号以及是32位还是64位
 
-
-
-需求加速度测量量程 +-2g最高采样率使用 pypass mode
-
-不使用中断(INT)不使用高通滤波器(High Pase Filter)不使用低通滤波器(Low Pase Filter)不使用FIFO
-
-配置表
-
-
-REG Address
-Data">
+如图，安装的版本为2.7.">
     
     
     
@@ -86,15 +82,15 @@ Data">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/07/21/hello/" title="lsm9ds1陀螺仪寄存器的配置" itemprop="url">lsm9ds1陀螺仪寄存器的配置</a>
+      <a href="/2017/06/24/python-opencv/" title="windos环境下搭建python+opencv" itemprop="url">windos环境下搭建python+opencv</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shikin.ga" title="Shikin">Shikin</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-07-21T02:28:20.000Z" itemprop="datePublished">2016-07-21</time>
-    更新日期:<time datetime="2016-07-21T19:05:34.279Z" itemprop="dateModified">2016-07-22</time>
+    <time datetime="2017-06-24T08:53:02.000Z" itemprop="datePublished">2017-06-24</time>
+    更新日期:<time datetime="2017-06-24T09:15:58.746Z" itemprop="dateModified">2017-06-24</time>
     
   </p>
 </header>
@@ -103,67 +99,28 @@ Data">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置表"><span class="toc-number">2.</span> <span class="toc-text">配置表</span></a></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#OPENCV安装"><span class="toc-number">1.</span> <span class="toc-text">OPENCV安装</span></a></li></ol>
 		</div>
 		
-		<p>配置用于MicroMouse的陀螺仪。</p>
-<hr>
-<hr>
-<hr>
-<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>加速度测量量程 +-2g<br>最高采样率<br>使用 pypass mode</p>
-<hr>
-<p>不使用中断(INT)<br>不使用高通滤波器(High Pase Filter)<br>不使用低通滤波器(Low Pase Filter)<br>不使用FIFO</p>
-<hr>
-<h2 id="配置表"><a href="#配置表" class="headerlink" title="配置表"></a>配置表</h2><table>
-<thead>
-<tr>
-<th style="text-align:left">REG Address</th>
-<th style="text-align:left">Data</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">10h</td>
-<td style="text-align:left">DBh</td>
-</tr>
-<tr>
-<td style="text-align:left">11h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">12h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">1Eh</td>
-<td style="text-align:left">38h</td>
-</tr>
-<tr>
-<td style="text-align:left">20h</td>
-<td style="text-align:left">C4h</td>
-</tr>
-<tr>
-<td style="text-align:left">21h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">22h</td>
-<td style="text-align:left">04h</td>
-</tr>
-<tr>
-<td style="text-align:left">23h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">24h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">2Eh</td>
-<td style="text-align:left">00h</td>
-</tr>
-</tbody>
-</table>
+		<p>本人用的是python-2.7.13 + numpy-1.10.2 + opencv-3.2.0</p>
+<p>可以点击找到下载地址</p>
+<p><a href="https://www.python.org/downloads/" target="_blank" rel="external">python</a></p>
+<p><a href="http://sourceforge.net/projects/numpy/files/NumPy" target="_blank" rel="external">numpy</a></p>
+<p><a href="https://sourceforge.net/projects/opencvlibrary/files/" target="_blank" rel="external">opencv</a></p>
+<p>###python 安装</p>
+<p>下载安装完成python之后，打开IDLE可以看到安装的版本号以及是32位还是64位</p>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/KT5VV0VeNx09HUma**tdNU0a7pF6YrCB7nVOTJpWwvA!/b/dLMAAAAAAAAA&amp;bo=VAKnAFQCpwARCT4!&amp;rf=viewer_4" alt=""></p>
+<p>如图，安装的版本为2.7.13，并且是32位的。</p>
+<p>###numpy 安装</p>
+<p>安装完成numpy之后，在IDLE中输入</p>
+<figure class="highlight plain"><figcaption><span>numpy``` </span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">没有报错说明成功安装numpy并且可以导入，输入</div><div class="line"></div><div class="line">```print numpy.__version__</div></pre></td></tr></table></figure>
+<p>可以看到安装的版本</p>
+<p><img src="http://a1.qpic.cn/psb?/V118uAby40NSw2/QGyHLclVml2I*aNSJtI4S7NYYpkmxa7yXoekoubqbsY!/b/dHUAAAAAAAAA&amp;bo=TwLjAE8C4wARADc!&amp;rf=viewer_4" alt=""></p>
+<h3 id="OPENCV安装"><a href="#OPENCV安装" class="headerlink" title="OPENCV安装"></a>OPENCV安装</h3><p>下载安装OPENCV后在将~\opencv\build\python\2.7\x86\cv2.pyd文件复制到 ~\Python27\Lib\site-packages文件夹中</p>
+<p>然后输入</p>
+<p><code>import cv2</code></p>
+<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/5Hq*yM6DNKZIsiJtt4g8KA1jg*b0Gpjn4a8jYtW3nNQ!/b/dB4BAAAAAAAA&amp;bo=TwIVAU8CFQERADc!&amp;rf=viewer_4" alt=""></p>
+<p>没有报错说明安装成功</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -171,14 +128,14 @@ Data">
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/MicroMouse/">MicroMouse</a>
+  <a class="article-category-link" href="/categories/python/">python</a>
 </div>
 
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2016/07/21/hello/" data-title="lsm9ds1陀螺仪寄存器的配置 | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2017/06/24/python-opencv/" data-title="windos环境下搭建python+opencv | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -187,19 +144,11 @@ Data">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/07/25/kalman-filter/" title="卡尔曼滤波器">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  卡尔曼滤波器</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/07/21/hello-world/"  title="Hello World">
+<a href="/2017/06/23/re-call/"  title="re-call">
  <strong>NEXT:</strong><br/> 
- <span>Hello World
+ <span>re-call
 </span>
 </a>
 </div>
@@ -209,7 +158,7 @@ Data">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="lsm9ds1陀螺仪寄存器的配置" data-thread-key="hello" data-author-key="Shikin" data-url="http://shikin.ga/post/hello"></div>
+	<div class="ds-thread" data-title="windos环境下搭建python+opencv" data-thread-key="python-opencv" data-author-key="Shikin" data-url="http://shikin.ga/post/python-opencv"></div>
 	
 </section>
 
@@ -219,7 +168,7 @@ Data">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#需求"><span class="toc-number">1.</span> <span class="toc-text">需求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#配置表"><span class="toc-number">2.</span> <span class="toc-text">配置表</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#OPENCV安装"><span class="toc-number">1.</span> <span class="toc-text">OPENCV安装</span></a></li></ol>
   </div>
 
 <div id="asidepart">
