@@ -1,0 +1,643 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+  <meta name="baidu_union_verify" content="d1952c66cf48912e21c18c7c581f382a">
+  <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
+<meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
+  
+    <title>python+opencv 生成/解码 QRcode | SK_Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
+    
+    <meta name="author" content="Shikin">
+    
+    <meta name="description" content="虽然对于一个二维码的图片可以直接用zbar的库进行解码，但是想了想还是折腾一下原理性的东西吧，所以还是用python+opencv去识别，顺便学习下opencv以及二维码的一些原理
+本渣渣在图像识别上还是个纯萌新，折腾这个就当学习了
+二维码生成QR码是一种特殊类型的条形码，可以对数字，字母和汉字字符">
+    
+    
+    
+    
+    <link rel="alternate" href="atom.xml" title="SK_Home" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            var _bdId ='391982416296a0d54221f59fe35250d4';
+             hm.src = "//hm.baidu.com/hm.js?" + _bdId;
+             var s = document.getElementsByTagName("script")[0]; 
+             s.parentNode.insertBefore(hm, s);
+        })();
+    </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+     
+</head>
+
+  <body>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><header>
+      <div>
+		
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="SK_Home">SK_Home</a></h1>
+				<a class="blog-motto">The only thing standing between you and your goal is the story you keep telling yourself as to why you can&#39;t achieve it.</a>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+					<li>
+					
+                                            <form class="search" action=http://zhannei.baidu.com/cse/search target="_blank">
+                                            <label>Search</label>
+                                        <input name="s" type="hidden" value= null ><input type="text" name="q" size="30" placeholder="搜索"><br>
+					
+					</li>
+				</ul>
+                            </nav>			
+</div>
+
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/07/07/python-QRcode/" title="python+opencv 生成/解码 QRcode" itemprop="url">python+opencv 生成/解码 QRcode</a>
+  </h1>
+  <p class="article-author">By
+    
+      <a href="http://shikin.ga" title="Shikin">Shikin</a>
+    </p>
+  <p class="article-time">
+    <time datetime="2017-07-07T01:19:45.000Z" itemprop="datePublished">2017-07-07</time>
+    更新日期:<time datetime="2017-07-07T04:19:12.904Z" itemprop="dateModified">2017-07-07</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二维码生成"><span class="toc-number">1.</span> <span class="toc-text">二维码生成</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据编码"><span class="toc-number">1.1.</span> <span class="toc-text">数据编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加Mode-Indicator"><span class="toc-number">1.1.1.</span> <span class="toc-text">添加Mode Indicator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加-Character-Count-Indicator"><span class="toc-number">1.1.2.</span> <span class="toc-text">添加 Character Count Indicator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据编码-1"><span class="toc-number">1.1.3.</span> <span class="toc-text">数据编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纠错码编码"><span class="toc-number">1.1.4.</span> <span class="toc-text">纠错码编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组成最终信息"><span class="toc-number">1.1.5.</span> <span class="toc-text">组成最终信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Format-Information"><span class="toc-number">1.1.6.</span> <span class="toc-text">Format Information</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二维码图像"><span class="toc-number">1.2.</span> <span class="toc-text">二维码图像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Function-Patterns"><span class="toc-number">1.2.1.</span> <span class="toc-text">Function Patterns</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据排列"><span class="toc-number">1.2.2.</span> <span class="toc-text">数据排列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加mask"><span class="toc-number">1.2.3.</span> <span class="toc-text">添加mask</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绘制二维码"><span class="toc-number">1.3.</span> <span class="toc-text">绘制二维码</span></a></li></ol></li></ol>
+		</div>
+		
+		<p>虽然对于一个二维码的图片可以直接用zbar的库进行解码，但是想了想还是折腾一下原理性的东西吧，所以还是用python+opencv去识别，顺便学习下opencv以及二维码的一些原理</p>
+<p>本渣渣在图像识别上还是个纯萌新，折腾这个就当学习了</p>
+<h1 id="二维码生成"><a href="#二维码生成" class="headerlink" title="二维码生成"></a>二维码生成</h1><p>QR码是一种特殊类型的条形码，可以对数字，字母和汉字字符等信息进行编码。</p>
+<p>本文以 Error Correction Level  = H; MaskNumber = 7; Mode Name=”Byte Mode” 文本内容 “Shikin loves Rabby”;   Version = 3; 为例进行二维码生成</p>
+<h2 id="数据编码"><a href="#数据编码" class="headerlink" title="数据编码"></a>数据编码</h2><h3 id="添加Mode-Indicator"><a href="#添加Mode-Indicator" class="headerlink" title="添加Mode Indicator"></a>添加Mode Indicator</h3><table>
+<thead>
+<tr>
+<th>Mode Name</th>
+<th style="text-align:left">Mode Indicator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Numeric Mode</td>
+<td style="text-align:left">0001</td>
+</tr>
+<tr>
+<td>Alphanumeric Mode</td>
+<td style="text-align:left">0010</td>
+</tr>
+<tr>
+<td>Byte Mode</td>
+<td style="text-align:left">0100</td>
+</tr>
+<tr>
+<td>Kanji Mode</td>
+<td style="text-align:left">1000</td>
+</tr>
+<tr>
+<td>ECI Mode</td>
+<td style="text-align:left">0111</td>
+</tr>
+</tbody>
+</table>
+<p>选取为Byte Mode ， 因此Mode Indicator 为 0100</p>
+<h3 id="添加-Character-Count-Indicator"><a href="#添加-Character-Count-Indicator" class="headerlink" title="添加 Character Count Indicator"></a>添加 Character Count Indicator</h3><p>Character Count Indicator 是一串比特序列来表示信息的长度，以 <b>Shikin loves Rabby</b> 为例， 长度为18，因此对应的二进制的比特为10010</p>
+<p>对应不同Byte Mode 和 二维码的版本 Character Count Indicator长度不同</p>
+<p><i>Vsersions 1 - 9</i></p>
+<ul>
+<li>Numeric mode: 10 bits</li>
+<li>Alphanumeric mode: 9 bits</li>
+<li>Byte mode: 8 bits</li>
+<li>Japanese mode: 8 bits</li>
+</ul>
+<p><i>Versions 10 - 26</i></p>
+<ul>
+<li>Numeric mode: 12 bits</li>
+<li>Alphanumeric mode: 11 bits</li>
+<li>Byte mode: 16</li>
+<li>Japanese mode: 10 bits</li>
+</ul>
+<p><i>Versions 27 - 40</i></p>
+<ul>
+<li>Numeric mode: 14 bits</li>
+<li>Alphanumeric mode: 13 bits</li>
+<li>Byte mode: 16</li>
+<li>Japanese mode: 12 bits</li>
+</ul>
+<p>因此，Character Count Indicator 为 00010010</p>
+<p>组合之前的Byte Mode Indicator 为 0100 00010010</p>
+<h3 id="数据编码-1"><a href="#数据编码-1" class="headerlink" title="数据编码"></a>数据编码</h3><p>Byte Mode中，对字符串的编码为ASCII码，因此很容易得到 <b>Shikin loves Rabby</b> 的数据编码为</p>
+<p>01010011 01101000 01101001 01101011 01101001 01101110 00100000 01101100 01101111 01110110 01100101 01110011 00100000 01010010 01100001 01100010 01100010 01111001</p>
+<p>综合起来为</p>
+<table>
+<thead>
+<tr>
+<th>Mode Indicator</th>
+<th style="text-align:left">Character Count Indicator</th>
+<th style="text-align:left">Encode Data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0100</td>
+<td style="text-align:left">00010010</td>
+<td style="text-align:left">01010011 01101000 01101001 01101011 01101001 01101110 00100000 01101100 01101111 01110110 01100101 01110011 00100000 01010010 01100001 01100010 01100010 01111001</td>
+</tr>
+</tbody>
+</table>
+<p>增加Terminator 使得 编码之后的字符长度为8的倍数，Terminator 为对应个数的’0’</p>
+<p>在本例中</p>
+<table>
+<thead>
+<tr>
+<th>Mode Indicator</th>
+<th style="text-align:left">Character Count Indicator</th>
+<th style="text-align:left">Encode Data</th>
+<th style="text-align:left">Terminator</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0100</td>
+<td style="text-align:left">00010010</td>
+<td style="text-align:left">01010011 01101000 01101001 01101011 01101001 01101110 00100000 01101100 01101111 01110110 01100101 01110011 00100000 01010010 01100001 01100010 01100010 01111001</td>
+<td style="text-align:left">0000</td>
+</tr>
+</tbody>
+</table>
+<p>在<a href="http://www.thonky.com/qr-code-tutorial/error-correction-table]" target="_blank" rel="external">Eerror Correction Table</a> 中可以看到 3-H的Total Number of Data Codewords 为26个，但是现在编码之后的码字为20个Byte的Codewords，因此需要在后面补充完整。在之后的数据中交替添加 11101100 和 00010001，因此完整编码之后的数据为</p>
+<table>
+<thead>
+<tr>
+<th>Mode Indicator</th>
+<th style="text-align:left">Character Count Indicator</th>
+<th style="text-align:left">Encode Data</th>
+<th style="text-align:left">Terminator</th>
+<th style="text-align:left">Pad</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0100</td>
+<td style="text-align:left">00010010</td>
+<td style="text-align:left">01010011 01101000 01101001 01101011 01101001 01101110 00100000 01101100 01101111 01110110 01100101 01110011 00100000 01010010 01100001 01100010 01100010 01111001</td>
+<td style="text-align:left">0000</td>
+<td style="text-align:left">11101100 00010001 11101100…</td>
+</tr>
+</tbody>
+</table>
+<p>其对应的数据用十进制表示为</p>
+<p>[65, 37, 54, 134, 150, 182, 150, 226, 6, 198, 247, 102, 87, 50, 5, 38, 22, 38, 39, 144, 236, 17, 236, 17, 236, 17]</p>
+<p>以上部分对应的Python 代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">chr2int</span><span class="params">(string)</span>:</span></div><div class="line">    temp = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> string:</div><div class="line">        temp.append(ord(i))</div><div class="line">    <span class="keyword">return</span> temp</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">dec2bi</span> <span class="params">(data)</span>:</span></div><div class="line">    temp = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> data:</div><div class="line">        t = bin(i)</div><div class="line">        t = t[<span class="number">2</span>:]</div><div class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">8</span>-len(t)):</div><div class="line">            t = <span class="string">'0'</span> + t</div><div class="line">        temp.append(t)</div><div class="line">    <span class="keyword">return</span> temp</div><div class="line"></div><div class="line">mode_indicator = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">count = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]</div><div class="line"></div><div class="line">data_len = <span class="number">26</span> * <span class="number">8</span></div><div class="line"></div><div class="line"></div><div class="line">string = <span class="string">'Shikin loves Rabby'</span></div><div class="line">int_data = chr2int(string)</div><div class="line">bi_data = dec2bi(int_data)</div><div class="line"></div><div class="line">data = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> bi_data:</div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> i:</div><div class="line">        data.append(int(j))</div><div class="line"></div><div class="line"></div><div class="line">data = mode_indicator + count + data</div></pre></td></tr></table></figure>
+<p>得到的data为二进制的bit序列包含了Mode Indicator，Character Count Indicator，Byte Mode编码后的数据</p>
+<p><code>print data</code></p>
+<p><code>[0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1]</code></p>
+<p>随后补充’0’直到数据是8的倍数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(data) % <span class="number">8</span>):</div><div class="line">    data.append(<span class="number">0</span>)</div></pre></td></tr></table></figure>
+<p>随后进行Pad添加，直到数据的Byte数达到26个</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">complete</span><span class="params">(data)</span>:</span></div><div class="line">    c1 = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">    c2 = [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>]</div><div class="line">    flag = <span class="number">0</span></div><div class="line">    <span class="keyword">global</span> data_len</div><div class="line">    <span class="keyword">while</span>( len(data) &lt; data_len):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> c1:</div><div class="line">                data.append(i)</div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> c2:</div><div class="line">                data.append(i)</div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">complete(data)</div></pre></td></tr></table></figure>
+<p>随后转换成十进制 方便观看以及分组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">int_data = []</div><div class="line">data.reverse()</div><div class="line"></div><div class="line"><span class="keyword">while</span>(len(data) != <span class="number">0</span>):</div><div class="line">    temp = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">8</span>):</div><div class="line">        temp = data.pop() + temp * <span class="number">2</span></div><div class="line">    int_data.append(temp)</div></pre></td></tr></table></figure>
+<h3 id="纠错码编码"><a href="#纠错码编码" class="headerlink" title="纠错码编码"></a>纠错码编码</h3><p>二维码使用Reed Solomon编码，不想写的太长，干脆直接用库去编码。</p>
+<p>本文在github 上找到一个Reed Solomon编码的库</p>
+<p>在<a href="http://www.thonky.com/qr-code-tutorial/error-correction-table]" target="_blank" rel="external">Eerror Correction Table</a> 中，3-H中有两个block，因此需要对int_data分成两组</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">block_1 = int_data[:<span class="number">13</span>]</div><div class="line">block_2 = int_data[<span class="number">13</span>:]</div></pre></td></tr></table></figure>
+<p>随后使用Reed Solomon的库进行编码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> reedsolo <span class="keyword">import</span> *</div><div class="line">b1 = <span class="string">''</span></div><div class="line">b2 = <span class="string">''</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> block_1:</div><div class="line">    b1 += chr(i)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> block_2:</div><div class="line">    b2 += chr(i)</div><div class="line"></div><div class="line">b1a = bytearray()</div><div class="line">b2a = bytearray()</div><div class="line"></div><div class="line">b1a.extend(b1)</div><div class="line">b2a.extend(b2)</div><div class="line"></div><div class="line">rs = RSCodec(<span class="number">22</span>)</div><div class="line">c_1 = rs.encode(b1a)</div><div class="line">c_2 = rs.encode(b2a)</div><div class="line"></div><div class="line">code1 = []</div><div class="line">code2 = []</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(c_1)):</div><div class="line">    code1.append(int(c_1[i]))</div><div class="line">    code2.append(int(c_2[i]))</div><div class="line"></div><div class="line">rs_code_1 = code1[<span class="number">13</span>:]</div><div class="line">rs_code_2 = code2[<span class="number">13</span>:]</div></pre></td></tr></table></figure>
+<p>rs_code_1与rs_code_2分别为两个block编码之后的数据</p>
+<h3 id="组成最终信息"><a href="#组成最终信息" class="headerlink" title="组成最终信息"></a>组成最终信息</h3><p>最终的信息是两个数据的block进行交替排列，然后两个纠错码的block进行排列，然后转换成二进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(block_1)):</div><div class="line">    data.append(block_1[i])</div><div class="line">    data.append(block_2[i])</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(rs_code_1)):</div><div class="line">    data.append(rs_code_1[i])</div><div class="line">    data.append(rs_code_2[i])</div><div class="line"></div><div class="line">data = dec2bi(data)</div><div class="line">temp = []</div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> data:</div><div class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> i:</div><div class="line">        temp.append(int(j))</div></pre></td></tr></table></figure>
+<h3 id="Format-Information"><a href="#Format-Information" class="headerlink" title="Format Information"></a>Format Information</h3><p>Format Information 中 前五位为Format String</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Error Correction Level</th>
+<th style="text-align:left">Bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">L</td>
+<td style="text-align:left">01</td>
+</tr>
+<tr>
+<td style="text-align:left">M</td>
+<td style="text-align:left">00</td>
+</tr>
+<tr>
+<td style="text-align:left">Q</td>
+<td style="text-align:left">11</td>
+</tr>
+<tr>
+<td style="text-align:left">H</td>
+<td style="text-align:left">10</td>
+</tr>
+</tbody>
+</table>
+<p>因此Fromat String 为 10111 随后进行纠错码的编码</p>
+<p>对于二进制的10位的generator polynomial 为10100110111</p>
+<p>编码步骤如下：</p>
+<p>首先通过在格式字符串的右侧放置十个字符，创建一个15位字符串，如下所示：<br>10111 - &gt; 101110000000000</p>
+<p>现在从左侧删除任何0（此处没有0）：<br>101110000000000 - &gt; 101110000000000</p>
+<p>1.使用0来填充右边的生成多项式字符串，使其与当前format string的长度相同。</p>
+<pre><code>10100110111 -&gt; 
+101001101110000 与 format string 长度相同
+101110000000000
+</code></pre><p>2.使用当前格式字符串对填充的生成多项式字符串进行XOR。</p>
+<pre><code>000111101110000 为异或后的结果
+</code></pre><p>3.从结果的左侧移除0。</p>
+<pre><code>111101110000
+</code></pre><p>我们必须划分多项式，直到得到的format string为10或更少位长。<br>如果位长大于是继续进行1 2 3的步骤。</p>
+<p>最后得到的15位的数据与101010000010010 进行异或 得到完整的Fromat Information</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">copy</span><span class="params">(d1,d2)</span>:</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(d1)):</div><div class="line">        d2.append(d1[i])</div><div class="line">    <span class="keyword">return</span> d2</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_z</span><span class="params">(data, length)</span>:</span></div><div class="line">    temp = data</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(length - len(data)):</div><div class="line">        temp.append(<span class="number">0</span>)</div><div class="line">    <span class="keyword">return</span> temp</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">xor_list</span> <span class="params">(l1,l2)</span>:</span></div><div class="line">    list_ = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(l1)):</div><div class="line">        list_.append(l1[i] ^ l2[i])</div><div class="line">    <span class="keyword">return</span> list_</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">delete_z</span><span class="params">(data)</span>:</span></div><div class="line">    <span class="keyword">while</span>(data[<span class="number">0</span>] == <span class="number">0</span>):</div><div class="line">        data = data[<span class="number">1</span>:]</div><div class="line">    <span class="keyword">return</span> data</div><div class="line"></div><div class="line">ecl_mask = [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</div><div class="line">em = []</div><div class="line">em = copy(ecl_mask,em)</div><div class="line">gp = [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>]</div><div class="line"></div><div class="line">t_em = add_z(ecl_mask,<span class="number">15</span>)</div><div class="line">t_gp = add_z(gp,<span class="number">15</span>)</div><div class="line"></div><div class="line"></div><div class="line">t_result = xor_list(t_em,t_gp)</div><div class="line">t_result = delete_z(t_result)</div><div class="line"></div><div class="line"><span class="keyword">while</span>(len(t_result) &gt; <span class="number">10</span>):</div><div class="line">    t_em = add_z(t_result,len(t_result))</div><div class="line">    t_gp = add_z(gp,len(t_result))</div><div class="line">    t_result = xor_list(t_em,t_gp)</div><div class="line">    t_result = delete_z(t_result)</div><div class="line"></div><div class="line"><span class="keyword">if</span>(len(t_result) != <span class="number">10</span>):</div><div class="line">    t_result.reverse()</div><div class="line">    t_result = add_z(t_result,<span class="number">10</span>)</div><div class="line">    t_result.reverse()</div><div class="line"><span class="comment">#print t_result</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> t_result:</div><div class="line">    em.append(i)</div><div class="line"></div><div class="line">mask = [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>]</div><div class="line">em = xor_list(em,mask)</div></pre></td></tr></table></figure>
+<p>Format Information 对应的位置如图所示</p>
+<p><img src="http://www.thonky.com/qr-code-tutorial/format-layout.png" alt=""></p>
+<p>对应坐标为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#draw format information</span></div><div class="line">fi_co1 = [[<span class="number">8</span>,<span class="number">0</span>],[<span class="number">8</span>,<span class="number">1</span>],[<span class="number">8</span>,<span class="number">2</span>],[<span class="number">8</span>,<span class="number">3</span>],[<span class="number">8</span>,<span class="number">4</span>],[<span class="number">8</span>,<span class="number">5</span>],[<span class="number">8</span>,<span class="number">7</span>],[<span class="number">8</span>,<span class="number">8</span>],[<span class="number">7</span>,<span class="number">8</span>],[<span class="number">5</span>,<span class="number">8</span>],[<span class="number">4</span>,<span class="number">8</span>],[<span class="number">3</span>,<span class="number">8</span>],[<span class="number">2</span>,<span class="number">8</span>],[<span class="number">1</span>,<span class="number">8</span>],[<span class="number">0</span>,<span class="number">8</span>]]</div><div class="line">fi_co2 = [[<span class="number">28</span>,<span class="number">8</span>],[<span class="number">27</span>,<span class="number">8</span>],[<span class="number">26</span>,<span class="number">8</span>],[<span class="number">25</span>,<span class="number">8</span>],[<span class="number">24</span>,<span class="number">8</span>],[<span class="number">23</span>,<span class="number">8</span>],[<span class="number">22</span>,<span class="number">8</span>],[<span class="number">21</span>,<span class="number">8</span>],[<span class="number">8</span>,<span class="number">22</span>],[<span class="number">8</span>,<span class="number">23</span>],[<span class="number">8</span>,<span class="number">24</span>],[<span class="number">8</span>,<span class="number">25</span>],[<span class="number">8</span>,<span class="number">26</span>],[<span class="number">8</span>,<span class="number">27</span>],[<span class="number">8</span>,<span class="number">28</span>]]</div><div class="line">fi_co1.reverse()</div><div class="line">fi_co2.reverse()</div></pre></td></tr></table></figure>
+<p>然后发现反了，需要reverse一下</p>
+<h2 id="二维码图像"><a href="#二维码图像" class="headerlink" title="二维码图像"></a>二维码图像</h2><h3 id="Function-Patterns"><a href="#Function-Patterns" class="headerlink" title="Function Patterns"></a>Function Patterns</h3><p><img src="http://www.thonky.com/qr-code-tutorial/function-patterns2.png" alt=""></p>
+<ul>
+<li>Finder Pattern：位于三个角落，可以快速检测二维码位置。</li>
+<li>Separators：一个单位宽的分割线，提高二维码位置检测的效率。</li>
+<li>Timing Pattern：黑白相间，用于修正坐标系。</li>
+<li>Alignment Patterns：提高二维码在失真情况下的识别率。</li>
+</ul>
+<h3 id="数据排列"><a href="#数据排列" class="headerlink" title="数据排列"></a>数据排列</h3><p><img src="http://www.thonky.com/qr-code-tutorial/data-bit-progression.png" alt=""></p>
+<p>对于Version 3的数据排列如下图所示</p>
+<p><img src="http://static.open-open.com/lib/uploadImg/20131029/20131029125044_502.png" alt=""></p>
+<p>因此需要按顺序获取坐标，因为萌新，所以硬着头皮写了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div><div class="line">257</div><div class="line">258</div><div class="line">259</div><div class="line">260</div><div class="line">261</div><div class="line">262</div><div class="line">263</div><div class="line">264</div><div class="line">265</div><div class="line">266</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_track</span><span class="params">()</span>:</span></div><div class="line">    <span class="comment"># get track of data</span></div><div class="line">    x = <span class="number">1</span></div><div class="line">    y = <span class="number">17</span></div><div class="line"></div><div class="line">    flag = <span class="number">0</span></div><div class="line"></div><div class="line"></div><div class="line">    data_co = [[x,y]]</div><div class="line"></div><div class="line">    <span class="comment"># part 1</span></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">1</span> <span class="keyword">or</span> y!= <span class="number">9</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 2</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">3</span> <span class="keyword">or</span> y != <span class="number">20</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        data_co.append([x,y])</div><div class="line">        </div><div class="line"></div><div class="line">    <span class="comment"># part 3</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">5</span> <span class="keyword">or</span> y!= <span class="number">9</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 4 </span></div><div class="line">    x = x + <span class="number">2</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">8</span> <span class="keyword">or</span> y != <span class="number">20</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 5</span></div><div class="line">    flag = <span class="number">1</span></div><div class="line">    x = <span class="number">9</span></div><div class="line">    y = <span class="number">28</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">10</span> <span class="keyword">or</span> y!= <span class="number">0</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            </div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 6</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">12</span> <span class="keyword">or</span> y != <span class="number">28</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y + <span class="number">1</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 7</span></div><div class="line">    flag = <span class="number">1</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">14</span> <span class="keyword">or</span> y!= <span class="number">0</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            </div><div class="line">        data_co.append([x,y])</div><div class="line">        </div><div class="line">    <span class="comment"># part 8</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">16</span> <span class="keyword">or</span> y != <span class="number">28</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y + <span class="number">1</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 9</span></div><div class="line">    flag = <span class="number">1</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">18</span> <span class="keyword">or</span> y!= <span class="number">0</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            </div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 10</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">19</span> <span class="keyword">or</span> y != <span class="number">20</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y + <span class="number">1</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 11</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        y = y + <span class="number">1</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 12</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">20</span> <span class="keyword">or</span> y != <span class="number">28</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> y == <span class="number">6</span>:</div><div class="line">            y = y + <span class="number">1</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 13</span></div><div class="line">    flag = <span class="number">1</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">22</span> <span class="keyword">or</span> y!= <span class="number">9</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> y == <span class="number">24</span>:</div><div class="line">            y = <span class="number">19</span></div><div class="line">            </div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 14</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">24</span> <span class="keyword">or</span> y != <span class="number">28</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        <span class="keyword">if</span> y == <span class="number">20</span>:</div><div class="line">            y = <span class="number">25</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="comment"># part 15</span></div><div class="line">    flag = <span class="number">1</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">while</span>(x != <span class="number">26</span> <span class="keyword">or</span> y!= <span class="number">9</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y - <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line"></div><div class="line">            </div><div class="line">        data_co.append([x,y])</div><div class="line">        </div><div class="line">    <span class="comment"># part 14</span></div><div class="line">    flag = <span class="number">0</span></div><div class="line">    x = x + <span class="number">1</span></div><div class="line">    data_co.append([x,y])</div><div class="line">    <span class="keyword">while</span> ( x!=<span class="number">28</span> <span class="keyword">or</span> y != <span class="number">28</span>):</div><div class="line">        <span class="keyword">if</span> flag == <span class="number">0</span>:</div><div class="line">            x = x + <span class="number">1</span></div><div class="line">            flag = <span class="number">1</span></div><div class="line">        <span class="keyword">else</span> :</div><div class="line">            x = x - <span class="number">1</span></div><div class="line">            y = y + <span class="number">1</span></div><div class="line">            flag = <span class="number">0</span></div><div class="line">        data_co.append([x,y])</div><div class="line"></div><div class="line">    <span class="keyword">return</span> data_co</div><div class="line"></div><div class="line"></div><div class="line">data_co = get_track()</div><div class="line">data_co.reverse()</div></pre></td></tr></table></figure>
+<p>最后发现画反了，需要reverse一下</p>
+<h3 id="添加mask"><a href="#添加mask" class="headerlink" title="添加mask"></a>添加mask</h3><p><a href="http://www.thonky.com/qr-code-tutorial/mask-patterns" target="_blank" rel="external">Mask Pattern</a>中对应的Mask Number = 7的公式为</p>
+<p>( ((row + column) mod 2) + ((row * column) mod 3) ) mod 2 == 0</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">data = []</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(temp)):</div><div class="line">    row = data_co[i][<span class="number">1</span>]</div><div class="line">    column = data_co[i][<span class="number">0</span>]</div><div class="line">    formula = (( ((row + column) % <span class="number">2</span>) + ((row * column) % <span class="number">3</span>) ) % <span class="number">2</span>)</div><div class="line">    data.append(temp[i] ^ formula)</div></pre></td></tr></table></figure>
+<h2 id="绘制二维码"><a href="#绘制二维码" class="headerlink" title="绘制二维码"></a>绘制二维码</h2><p>坐标 以及 数据 获取之后绘制二维码就很简单了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#draw QRcode</span></div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> cv2</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">show</span><span class="params">(img)</span>:</span></div><div class="line">    cv2.namedWindow(<span class="string">"Image"</span>)</div><div class="line">    cv2.imshow(<span class="string">"Image"</span>,img)</div><div class="line">    cv2.waitKey(<span class="number">0</span>)</div><div class="line">    cv2.destroyAllWindows()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw_rect</span><span class="params">(ct,scl,cl)</span>:</span></div><div class="line">    p1 = [ct[<span class="number">0</span>]-scl,ct[<span class="number">1</span>]-scl]</div><div class="line">    p2 = [ct[<span class="number">0</span>]-scl,ct[<span class="number">1</span>]+scl]</div><div class="line">    p3 = [ct[<span class="number">0</span>]+scl,ct[<span class="number">1</span>]+scl]</div><div class="line">    p4 = [ct[<span class="number">0</span>]+scl,ct[<span class="number">1</span>]-scl]</div><div class="line">    sq = np.array([p1,p2,p3,p4], np.int32)</div><div class="line">    cv2.fillPoly(img, [sq], (cl,cl,cl))</div><div class="line"></div><div class="line">img = np.zeros((<span class="number">310</span>,<span class="number">310</span>,<span class="number">3</span>), np.uint8)</div><div class="line">draw_rect([<span class="number">155</span>,<span class="number">155</span>],<span class="number">155</span>,<span class="number">255</span>)</div><div class="line"></div><div class="line"><span class="comment"># draw timing pattern</span></div><div class="line">w = <span class="number">5</span></div><div class="line">tp = <span class="number">5</span></div><div class="line">tp_fix = <span class="number">75</span></div><div class="line">color = <span class="number">255</span></div><div class="line"><span class="keyword">while</span> tp &lt; <span class="number">290</span>:</div><div class="line">    <span class="keyword">if</span> color == <span class="number">0</span>:</div><div class="line">        draw_rect([tp,tp_fix],w,color)</div><div class="line">        draw_rect([tp_fix,tp],w,color)</div><div class="line">    color = color ^ <span class="number">255</span></div><div class="line">    tp = tp + <span class="number">10</span></div><div class="line"></div><div class="line"><span class="comment">### draw Finder Patterns</span></div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">45</span>],<span class="number">35</span>,<span class="number">0</span>)</div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">45</span>],<span class="number">25</span>,<span class="number">255</span>)</div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">45</span>],<span class="number">15</span>,<span class="number">0</span>)</div><div class="line"></div><div class="line">draw_rect([<span class="number">265</span>,<span class="number">45</span>],<span class="number">35</span>,<span class="number">0</span>)</div><div class="line">draw_rect([<span class="number">265</span>,<span class="number">45</span>],<span class="number">25</span>,<span class="number">255</span>)</div><div class="line">draw_rect([<span class="number">265</span>,<span class="number">45</span>],<span class="number">15</span>,<span class="number">0</span>)</div><div class="line"></div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">265</span>],<span class="number">35</span>,<span class="number">0</span>)</div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">265</span>],<span class="number">25</span>,<span class="number">255</span>)</div><div class="line">draw_rect([<span class="number">45</span>,<span class="number">265</span>],<span class="number">15</span>,<span class="number">0</span>)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">co2pt</span><span class="params">(co)</span>:</span></div><div class="line">    pt = [<span class="number">0</span>,<span class="number">0</span>]</div><div class="line">    pt[<span class="number">0</span>] = co[<span class="number">0</span>] * <span class="number">10</span> + <span class="number">15</span></div><div class="line">    pt[<span class="number">1</span>] = co[<span class="number">1</span>] * <span class="number">10</span> + <span class="number">15</span></div><div class="line">    <span class="keyword">return</span> pt</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment"># draw Format Information</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(em)):</div><div class="line">    pt1 = co2pt(fi_co1[i])</div><div class="line">    pt2 = co2pt(fi_co2[i])</div><div class="line">    color = (em[i]^<span class="number">1</span>)</div><div class="line">    <span class="keyword">if</span> color == <span class="number">0</span>:</div><div class="line">        draw_rect(pt1,w,color)</div><div class="line">        draw_rect(pt2,w,color)</div><div class="line"></div><div class="line"><span class="comment"># draw data</span></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(data)):</div><div class="line">    pt = co2pt(data_co[i])</div><div class="line">    color = data[i]</div><div class="line">    <span class="keyword">if</span> color == <span class="number">0</span>:</div><div class="line">        draw_rect(pt,w,color)</div><div class="line"></div><div class="line"><span class="comment"># draw Alignment Patterns</span></div><div class="line">draw_rect([<span class="number">225</span>,<span class="number">225</span>],<span class="number">25</span>,<span class="number">0</span>)</div><div class="line">draw_rect([<span class="number">225</span>,<span class="number">225</span>],<span class="number">15</span>,<span class="number">255</span>)</div><div class="line">draw_rect([<span class="number">225</span>,<span class="number">225</span>],<span class="number">5</span>,<span class="number">0</span>)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">show(img)</div></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://shikin.ga/2017/07/07/python-QRcode/" data-title="python+opencv 生成/解码 QRcode | SK_Home" data-tsina="null" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/06/24/python-opencv/"  title="windos环境下搭建python+opencv">
+ <strong>NEXT:</strong><br/> 
+ <span>windos环境下搭建python+opencv
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	
+	<div class="ds-thread" data-title="python+opencv 生成/解码 QRcode" data-thread-key="python-QRcode" data-author-key="Shikin" data-url="http://shikin.ga/post/python-QRcode"></div>
+	
+</section>
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二维码生成"><span class="toc-number">1.</span> <span class="toc-text">二维码生成</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据编码"><span class="toc-number">1.1.</span> <span class="toc-text">数据编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加Mode-Indicator"><span class="toc-number">1.1.1.</span> <span class="toc-text">添加Mode Indicator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加-Character-Count-Indicator"><span class="toc-number">1.1.2.</span> <span class="toc-text">添加 Character Count Indicator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据编码-1"><span class="toc-number">1.1.3.</span> <span class="toc-text">数据编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#纠错码编码"><span class="toc-number">1.1.4.</span> <span class="toc-text">纠错码编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#组成最终信息"><span class="toc-number">1.1.5.</span> <span class="toc-text">组成最终信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Format-Information"><span class="toc-number">1.1.6.</span> <span class="toc-text">Format Information</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二维码图像"><span class="toc-number">1.2.</span> <span class="toc-text">二维码图像</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Function-Patterns"><span class="toc-number">1.2.1.</span> <span class="toc-text">Function Patterns</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#数据排列"><span class="toc-number">1.2.2.</span> <span class="toc-text">数据排列</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#添加mask"><span class="toc-number">1.2.3.</span> <span class="toc-text">添加mask</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#绘制二维码"><span class="toc-number">1.3.</span> <span class="toc-text">绘制二维码</span></a></li></ol></li></ol>
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+<div id="authorInfo">
+	
+	<div class="social-list" class="clearfix">
+		
+		<a href="http://weibo.com/1962535403" target="_blank" title="weibo"></a>
+		
+		
+		
+		<a href="https://github.com/ShikinZhang" target="_blank" title="github"></a>
+		
+		
+		
+	</div>
+</div>
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+			<li><a href="/categories/MicroMouse/" title="MicroMouse">MicroMouse<sup>3</sup></a></li>
+		
+			<li><a href="/categories/PID-learning/" title="PID learning">PID learning<sup>1</sup></a></li>
+		
+			<li><a href="/categories/python/" title="python">python<sup>1</sup></a></li>
+		
+			<li><a href="/categories/recall/" title="recall">recall<sup>1</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+      <li><a href="http://doris.work/" target="_blank" title="SummerLyb">SummerLyb</a></li>
+      <li><a href="http://su-hao.com/" target="_blank" title="Soe">mdzz</a></li>
+    </ul>
+</div>
+
+
+  <div class="rsspart">
+	<a href="atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+    
+            <p class="copyright"> © 2017 
+		
+		<a href="http://shikin.ga" target="_blank" title="Shikin">Shikin</a>
+		
+            && Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> && Theme by <a href="http://gengbiao.me" target="_blank" title="coney">coney</a>
+            </div>
+</footer>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
+
+
+
+
+
+
+<script>
+    
+        var _bdImg = '4';
+    
+    window._bd_share_config={
+        "common":{
+            "bdSnsKey":{
+
+            },
+            "bdText":"",
+            "bdMini":"2",
+            "bdMiniList":[
+                "qzone",
+                "tsina",
+                "weixin",
+                "renren",
+                "tqq",
+                "tieba",
+                "douban",
+                "sqq",
+                "diandian",
+                "huaban",
+                "youdao",
+                "mail",
+                "ty",
+                "fbook",
+                "twi",
+                "linkedin",
+                "copy",
+                "print"
+            ],
+            "bdPic":"",
+            "bdStyle":"0",
+            "bdSize":"16"
+        },
+        "slide":{
+            "type":"slide",
+            "bdImg":_bdImg,
+            "bdPos":"right",
+            "bdTop":"350"
+        },
+        "image":{
+            "viewList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ],
+            "viewText":"分享：",
+            "viewSize":"16"
+        },
+        "selectShare":{
+            "bdContainerClass":null,
+            "bdSelectMiniList":[
+                "weixin",
+                "qzone",
+                "tsina",
+                "renren",
+                "douban",
+                "tqq"
+            ]
+        }
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'null', 'null');  
+ga('send', 'pageview');
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+  </body>
+</html>
+
