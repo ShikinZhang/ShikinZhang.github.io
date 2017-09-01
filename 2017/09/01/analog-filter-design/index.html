@@ -84,7 +84,7 @@ There">
     </p>
   <p class="article-time">
     <time datetime="2017-09-01T06:14:29.000Z" itemprop="datePublished">2017-09-01</time>
-    更新日期:<time datetime="2017-09-01T10:51:55.226Z" itemprop="dateModified">2017-09-01</time>
+    更新日期:<time datetime="2017-09-01T10:59:39.677Z" itemprop="dateModified">2017-09-01</time>
     
   </p>
 </header>
@@ -108,16 +108,16 @@ There">
 <p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/hHvbJOEAx7RksBgROyrDCThq7.cFAZKq**NWZkpIu3w!/b/dB4BAAAAAAAA&amp;bo=3wM4AgAAAAADAMM!&amp;rf=viewer_4" alt=""></p>
 <h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>Suppose the passband ripple $\delta<em>p(s) = 0.1$  and the $H</em>{LP}(s) = \frac{1}{1+s}$</p>
 <p>Then, Since $ |H_{LP}(\Omega_p) |= 1-\delta_p(s)$, we can get the $\Omega_p = 0.4843$</p>
-<p>If we want to get the passband frequency of HighPass Filter $\hat\Omega_p = 5$. Then the Spectral Transformation is:</p>
+<p>If we want to get the passband frequency of HighPass Filter $\hat\Omega_p = 5$ . Then the Spectral Transformation is:</p>
 <p>$$<br>    s  = \frac{0.4843 \times 5}{\hat{s}}<br>$$</p>
 <p>So the Designed HighPass Filter is </p>
 <p>$$<br>    H<em>D(\hat{s}) = \frac{1}{1+s} | </em>{s = F(\hat{s})} = \frac{1}{1+\frac{0.4843 \times 5}{\hat{s}}} = \frac{\hat{s}}{\hat{s} + 2.4215}<br>$$</p>
 <p>Here is the plot of this HighPass Filter and it shows that the $\hat\Omega_p = 5$</p>
 <p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/e53khnK830Bz1lYBuxAxJygaR2Exmlt*.I2*g9MmaNI!/b/dPcAAAAAAAAA&amp;bo=MAKkAQAAAAADALI!&amp;rf=viewer_4" alt=""></p>
-<h2 id="Bandpass-Filter-Design"><a href="#Bandpass-Filter-Design" class="headerlink" title="Bandpass Filter Design"></a>Bandpass Filter Design</h2><h3 id="Theory-1"><a href="#Theory-1" class="headerlink" title="Theory"></a>Theory</h3><p>Desiered passband edges of bandpass filter: $\hat\Omega<em>{p1} , \hat\Omega</em>{p2} $</p>
+<h2 id="Bandpass-Filter-Design"><a href="#Bandpass-Filter-Design" class="headerlink" title="Bandpass Filter Design"></a>Bandpass Filter Design</h2><h3 id="Theory-1"><a href="#Theory-1" class="headerlink" title="Theory"></a>Theory</h3><p>Desiered passband edges of bandpass filter: $\hat\Omega<em>{p1} , \hat\Omega</em>{p2}$</p>
 <p>Passband edge of prototype lowpass filter: $\Omega_p$</p>
 <p><b>Spectral Transformation</b></p>
-<p>$$<br>        s = \Omega<em>p \frac{\hat{s}^2 + \hat\Omega</em>{p1}\hat\Omega<em>{p2}}{\hat{s}(\hat\Omega</em>{p2} - \hat\Omega_{p1})}<br>$$</p>
+<p>$$<br>    s = \Omega<em>p \frac{\hat{s}^2 + \hat\Omega</em>{p1}\hat\Omega<em>{p2}}{\hat{s}(\hat\Omega</em>{p2} - \hat\Omega_{p1})}<br>$$</p>
 <p>And on the imaginary axis</p>
 <p>$$<br>    \Omega = -\Omega<em>p \frac{\hat\Omega</em>{p1}\hat\Omega<em>{p2} - \hat\Omega^2}{\hat\Omega(\hat\Omega</em>{p2}-\hat\Omega_{p1})}<br>$$</p>
 <p>Here is the figure showing the relationship between $\Omega$ and $\hat\Omega$</p>
