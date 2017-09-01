@@ -7,12 +7,14 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>Hello World | SK_Home</title>
+    <title>analog_filter_design | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in ">
+    <meta name="description" content="Analog filter desingUsing ptototype lowpass filter to design highpass filter;
+So, the transfer function of prototype lowpass filter: $H_{LP}(s)$
+There">
     
     
     
@@ -74,15 +76,15 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/07/21/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2017/09/01/analog-filter-design/" title="analog_filter_design" itemprop="url">analog_filter_design</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shikin.ga" title="Shikin">Shikin</a>
     </p>
   <p class="article-time">
-    <time datetime="2016-07-21T02:12:01.760Z" itemprop="datePublished">2016-07-21</time>
-    更新日期:<time datetime="2016-07-21T02:12:01.763Z" itemprop="dateModified">2016-07-21</time>
+    <time datetime="2017-09-01T06:14:29.000Z" itemprop="datePublished">2017-09-01</time>
+    更新日期:<time datetime="2017-09-01T10:51:55.226Z" itemprop="dateModified">2017-09-01</time>
     
   </p>
 </header>
@@ -91,28 +93,76 @@
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Analog-filter-desing"><span class="toc-number">1.</span> <span class="toc-text">Analog filter desing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Highpass-Filter-Design"><span class="toc-number">1.1.</span> <span class="toc-text">Highpass Filter Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Theory"><span class="toc-number">1.1.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example"><span class="toc-number">1.1.2.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bandpass-Filter-Design"><span class="toc-number">1.2.</span> <span class="toc-text">Bandpass Filter Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Theory-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bandstop-Filter-Design"><span class="toc-number">1.3.</span> <span class="toc-text">Bandstop Filter Design</span></a></li></ol></li></ol>
 		</div>
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<h1 id="Analog-filter-desing"><a href="#Analog-filter-desing" class="headerlink" title="Analog filter desing"></a>Analog filter desing</h1><p>Using ptototype lowpass filter to design highpass filter;</p>
+<p>So, the transfer function of prototype lowpass filter: $H_{LP}(s)$</p>
+<p>There is the Spectral transformation : $ s = F(\hat{s}) $</p>
+<p>Then, we can get the Designed Filter : $H<em>D(\hat{s}) = H</em>{LP}(s)|_{s = F(\hat{s})}$</p>
+<h2 id="Highpass-Filter-Design"><a href="#Highpass-Filter-Design" class="headerlink" title="Highpass Filter Design"></a>Highpass Filter Design</h2><h3 id="Theory"><a href="#Theory" class="headerlink" title="Theory"></a>Theory</h3><p>Define desired passband edge of highpass filter: $\hat\Omega_p$</p>
+<p>and passband edge of prototype lowpass filter: $\Omega_p$ .</p>
+<p>Here gives the Spectral Transformation:<br>$$<br>    s = \frac{\Omega_p \hat\Omega_p } {\hat{s}}<br>$$</p>
+<p>And on the imaginary axis<br>$$<br>    \Omega = -\frac{\Omega_p \hat\Omega_p}{\hat\Omega}<br>$$</p>
+<p>Here is the figure showing the relationship between $\Omega$ and $\hat\Omega$</p>
+<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/hHvbJOEAx7RksBgROyrDCThq7.cFAZKq**NWZkpIu3w!/b/dB4BAAAAAAAA&amp;bo=3wM4AgAAAAADAMM!&amp;rf=viewer_4" alt=""></p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><p>Suppose the passband ripple $\delta<em>p(s) = 0.1$  and the $H</em>{LP}(s) = \frac{1}{1+s}$</p>
+<p>Then, Since $ |H_{LP}(\Omega_p) |= 1-\delta_p(s)$, we can get the $\Omega_p = 0.4843$</p>
+<p>If we want to get the passband frequency of HighPass Filter $\hat\Omega_p = 5$. Then the Spectral Transformation is:</p>
+<p>$$<br>    s  = \frac{0.4843 \times 5}{\hat{s}}<br>$$</p>
+<p>So the Designed HighPass Filter is </p>
+<p>$$<br>    H<em>D(\hat{s}) = \frac{1}{1+s} | </em>{s = F(\hat{s})} = \frac{1}{1+\frac{0.4843 \times 5}{\hat{s}}} = \frac{\hat{s}}{\hat{s} + 2.4215}<br>$$</p>
+<p>Here is the plot of this HighPass Filter and it shows that the $\hat\Omega_p = 5$</p>
+<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/e53khnK830Bz1lYBuxAxJygaR2Exmlt*.I2*g9MmaNI!/b/dPcAAAAAAAAA&amp;bo=MAKkAQAAAAADALI!&amp;rf=viewer_4" alt=""></p>
+<h2 id="Bandpass-Filter-Design"><a href="#Bandpass-Filter-Design" class="headerlink" title="Bandpass Filter Design"></a>Bandpass Filter Design</h2><h3 id="Theory-1"><a href="#Theory-1" class="headerlink" title="Theory"></a>Theory</h3><p>Desiered passband edges of bandpass filter: $\hat\Omega<em>{p1} , \hat\Omega</em>{p2} $</p>
+<p>Passband edge of prototype lowpass filter: $\Omega_p$</p>
+<p><b>Spectral Transformation</b></p>
+<p>$$<br>        s = \Omega<em>p \frac{\hat{s}^2 + \hat\Omega</em>{p1}\hat\Omega<em>{p2}}{\hat{s}(\hat\Omega</em>{p2} - \hat\Omega_{p1})}<br>$$</p>
+<p>And on the imaginary axis</p>
+<p>$$<br>    \Omega = -\Omega<em>p \frac{\hat\Omega</em>{p1}\hat\Omega<em>{p2} - \hat\Omega^2}{\hat\Omega(\hat\Omega</em>{p2}-\hat\Omega_{p1})}<br>$$</p>
+<p>Here is the figure showing the relationship between $\Omega$ and $\hat\Omega$</p>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/y3AUN1UMFeVwWKNk7Bq7kaIPA.sZBbcB5mD1kdC*jRY!/b/dEQAAAAAAAAA&amp;bo=LwP4AQAAAAADAPA!&amp;rf=viewer_4" alt=""></p>
+<p>Both passband and stopband edge frequencies must exhibit symmetry with respect to $\hat\Omega_0$</p>
+<p>$$<br>    \hat\Omega<em>0^2 = \hat\Omega</em>{p1}\hat\Omega<em>{p2} = \hat\Omega</em>{s1}\hat\Omega_{s2}<br>$$</p>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><p>Passband is [5,7] <br> Stopband: [0,3] and above 9 <br> Passband ripple: $\delta_p = 0.01$ <br> Stopband ripple: $\delta_s = 0.005$</p>
+<p>The product of passband edge frequencies : $5 \times 7 = 35$ <br>  The product of stopband edge frequencies : $3 \times 9 = 27$  <br> Adjust lower stopband edge frequency:  $35 / 9 = 3.89$</p>
+<p>Suppose the $\Omega_p = 1$, the Spectral Transformation:</p>
+<p>$$<br>    s = \Omega<em>p \frac{\hat{s}^2 + \hat\Omega</em>{p1}\hat\Omega<em>{p2}}{\hat{s}(\hat\Omega</em>{p2} - \hat\Omega_{p1})} = \frac{\hat{s}^2 + 35}{2\hat{s}}<br>$$</p>
+<p>On imaginary axis </p>
+<p>$$<br>    \Omega = -\Omega<em>p \frac{\hat\Omega</em>{p1}\hat\Omega<em>{p2} - \hat\Omega^2}{\hat\Omega(\hat\Omega</em>{p2}-\hat\Omega_{p1})} = - \frac{35-\hat\Omega^2}{2\hat\Omega}<br>$$</p>
+<p>Stopband edge of prototype lowpass filter</p>
+<p>$$<br>    \Omega_s = -\frac{35 -81}{2 \times 9} = 2.56<br>$$</p>
+<p><b>Then design the specification for prototype lowpass filter</b></p>
+<p>Passband:[0,1] <br> stopband: above 2.56 <br> Passband ripple: $\delta_p = 0.01$ <br>Stopband ripple: $\delta_s = 0.005$</p>
+<p>Here shows the calculation of the prototype lowpass filter</p>
+<p>8 order Butterworth filter with cutoff frequency 1.3178 satisfies specifications.</p>
+<p>then from Spectral Transformation in imaginary axis function get the magnitude response</p>
+<p>$$<br>    |H_a(j\hat\Omega) |^2 = \frac{1}{1+(\Omega/\Omega<em>c)^{2N}}|</em>{\Omega == - \frac{35-\hat\Omega^2}{2\hat\Omega} }<br>$$</p>
+<p>Then plot in MATLAB</p>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/zQKj429BS33lbGHqJCXpPHtdNVOfkVEf7TtLAnO4vX8!/b/dIUBAAAAAAAA&amp;bo=7gSAAgAAAAADB0o!&amp;rf=viewer_4" alt=""></p>
+<h2 id="Bandstop-Filter-Design"><a href="#Bandstop-Filter-Design" class="headerlink" title="Bandstop Filter Design"></a>Bandstop Filter Design</h2><p>Desired stopband edges of bandstop filter: $\hat\Omega<em>{s1},\hat\Omega</em>{s2}$ <br> Stopband edge of prototype lowpass filter:: $\Omega_s$</p>
+<p><b>Spectral Transformation</b></p>
+<p>$$<br>    s = \Omega<em>p \frac{\hat{s}(\hat\Omega</em>{s2} - \hat\Omega<em>{s1})}{\hat{s}^2 + \hat\Omega</em>{s1}\hat\Omega_{s2}}<br>$$</p>
+<p>On the imaginary axis </p>
+<p>$$<br>    \Omega = -\Omega<em>p \frac{\hat\Omega(\hat\Omega</em>{s2}-\hat\Omega<em>{s1})}{\hat\Omega</em>{s1}\hat\Omega_{s2} - \hat\Omega^2}<br>$$</p>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/ZVqEZafI5kYVQPcROv9gtyZrt6NpOLT00KokVx.tAfs!/b/dIUBAAAAAAAA&amp;bo=lQMfAgAAAAADB6k!&amp;rf=viewer_4" alt=""></p>
+<p>Band edges exhibit symmetry with respect to centre frequency </p>
+<p>$$<br>    \hat\Omega<em>0^2 = \hat\Omega</em>{p1}\hat\Omega<em>{p2} = \hat\Omega</em>{s1}\hat\Omega_{s2}<br>$$</p>
   
 	</div>
 		<footer class="article-footer clearfix">
 
 
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Signal/">Signal</a>
+</div>
+
 
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2016/07/21/hello-world/" data-title="Hello World | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2017/09/01/analog-filter-design/" data-title="analog_filter_design | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -122,18 +172,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/07/25/kalman-filter/" title="卡尔曼滤波器">
+ <a href="/2017/09/01/lowpass-filter-design/" title="lowpass_filter_design">
   <strong>PREVIOUS:</strong><br/>
   <span>
-  卡尔曼滤波器</span>
+  lowpass_filter_design</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2016/07/21/hello/"  title="lsm9ds1陀螺仪寄存器的配置">
+<a href="/2017/07/07/python-QRcode/"  title="python+opencv 生成/解码 QRcode">
  <strong>NEXT:</strong><br/> 
- <span>lsm9ds1陀螺仪寄存器的配置
+ <span>python+opencv 生成/解码 QRcode
 </span>
 </a>
 </div>
@@ -143,7 +193,7 @@
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="Hello World" data-thread-key="hello-world" data-author-key="Shikin" data-url="http://shikin.ga/post/hello-world"></div>
+	<div class="ds-thread" data-title="analog_filter_design" data-thread-key="analog-filter-design" data-author-key="Shikin" data-url="http://shikin.ga/post/analog-filter-design"></div>
 	
 </section>
 
@@ -153,7 +203,7 @@
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Analog-filter-desing"><span class="toc-number">1.</span> <span class="toc-text">Analog filter desing</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Highpass-Filter-Design"><span class="toc-number">1.1.</span> <span class="toc-text">Highpass Filter Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Theory"><span class="toc-number">1.1.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example"><span class="toc-number">1.1.2.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bandpass-Filter-Design"><span class="toc-number">1.2.</span> <span class="toc-text">Bandpass Filter Design</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Theory-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">Example</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bandstop-Filter-Design"><span class="toc-number">1.3.</span> <span class="toc-text">Bandstop Filter Design</span></a></li></ol></li></ol>
   </div>
 
 <div id="asidepart">
