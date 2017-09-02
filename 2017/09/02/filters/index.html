@@ -7,13 +7,13 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>lowpass_filter_design | SK_Home</title>
+    <title>Design of Discrete IIR Filter | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
     
-    <meta name="description" content="Butterworth Lowpass FilterTheoryThe magnitude-squared response of an analog lowpass Butterworth filter is given by
-$$    |H_a(j\Omega) |^2 = \frac{1}{">
+    <meta name="description" content="Discrete time IIR filter designs based on transformation of continuous time designs are easy to carry out
+Bilinear TransformationBilinear Transformati">
     
     
     
@@ -75,15 +75,15 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/09/01/lowpass-filter-design/" title="lowpass_filter_design" itemprop="url">lowpass_filter_design</a>
+      <a href="/2017/09/02/filters/" title="Design of Discrete IIR Filter" itemprop="url">Design of Discrete IIR Filter</a>
   </h1>
   <p class="article-author">By
     
       <a href="http://shikin.ga" title="Shikin">Shikin</a>
     </p>
   <p class="article-time">
-    <time datetime="2017-09-01T09:11:27.000Z" itemprop="datePublished">2017-09-01</time>
-    更新日期:<time datetime="2017-09-01T10:51:56.947Z" itemprop="dateModified">2017-09-01</time>
+    <time datetime="2017-09-02T03:20:06.000Z" itemprop="datePublished">2017-09-02</time>
+    更新日期:<time datetime="2017-09-02T03:35:18.044Z" itemprop="dateModified">2017-09-02</time>
     
   </p>
 </header>
@@ -92,30 +92,15 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 		
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
-		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Butterworth-Lowpass-Filter"><span class="toc-number">1.</span> <span class="toc-text">Butterworth Lowpass Filter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Theory"><span class="toc-number">1.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example"><span class="toc-number">1.2.</span> <span class="toc-text">Example</span></a></li></ol></li></ol>
+		<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Bilinear-Transformation"><span class="toc-number">1.</span> <span class="toc-text">Bilinear Transformation</span></a></li></ol>
 		</div>
 		
-		<h1 id="Butterworth-Lowpass-Filter"><a href="#Butterworth-Lowpass-Filter" class="headerlink" title="Butterworth Lowpass Filter"></a>Butterworth Lowpass Filter</h1><h2 id="Theory"><a href="#Theory" class="headerlink" title="Theory"></a>Theory</h2><p>The magnitude-squared response of an analog lowpass Butterworth filter is given by</p>
-<p>$$<br>    |H_a(j\Omega) |^2 = \frac{1}{1+(\Omega/\Omega_c)^{2N}}<br>$$</p>
-<p>Passband ripple: $\delta_s$ <br> Stopband ripple: $\delta_s$ <br></p>
-<p>$$<br>    |H_a(j\Omega_p) |^2 = \frac{1}{1+(\Omega_p/\Omega_c)^{2N}} = (1-\delta_p)^2 = \frac{1}{1+\epsilon^2}<br>$$</p>
-<p>$$<br>    |H_a(j\Omega_s) |^2 = \frac{1}{1+(\Omega_s/\Omega_c)^{2N}} = \delta_s^2 = \frac{1}{A^2}<br>$$</p>
-<p>Solving above </p>
-<p>$$<br>    N = \frac{1}{2} \frac{log<em>{10}[(A^2-1)/\epsilon^2]}{log</em>{10}(\Omega_s/\Omega_p)}<br>$$</p>
-<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>Passband edge frequency : $\Omega_p = 1$ <br> Stopband edge frequency : $\Omega_s = 2.56$ <br>Passband ripple: $\delta_p = 0.01$ <br>Stopband ripple: $\delta_s = 0.005$</p>
-<p>calculating $\epsilon$ and $A$</p>
-<p>$$<br>     (1-\delta_p)^2 = \frac{1}{1+\epsilon^2}<br>$$</p>
-<p>$$<br>    \delta_s^2 = \frac{1}{A^2}<br>$$</p>
-<p> $\epsilon = 0.1425$ and $A = 200$ , Then calculating N</p>
-<p> $$<br>    N = \frac{1}{2} \frac{log<em>{10}[(A^2-1)/\epsilon^2]}{log</em>{10}(\Omega_s/\Omega_p)} = 7.7092<br>$$</p>
-<p>$N$ should be an integer, so $N = 8$</p>
-<p>Then calculating $\Omega_c$</p>
-<p>$$<br>    (\Omega_p/\Omega_c)^{2N} = \epsilon^2<br>$$</p>
-<p>or </p>
-<p>$$<br>    \frac{1}{1+(\Omega_s/\Omega_c)^{2N}} = \delta_s^2<br>$$</p>
-<p>It can gives the minimum of $\Omega_c = 1.2785 $ and maximum of $\Omega_c = 1.3201$</p>
-<p>Here shows the diffrent $\Omega_c $ of the magnitude response</p>
-<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/qgGSDdAuLpLsocdEpi1N*OXUNl6hBsAnHWYZyaPm6.M!/b/dIUBAAAAAAAA&amp;bo=nASAAgAAAAADBzg!&amp;rf=viewer_4" alt=""></p>
+		<p>Discrete time IIR filter designs based on transformation of continuous time designs are easy to carry out</p>
+<h1 id="Bilinear-Transformation"><a href="#Bilinear-Transformation" class="headerlink" title="Bilinear Transformation"></a>Bilinear Transformation</h1><p><b>Bilinear Transformation</b> bewteen s-plane and z-plane</p>
+<p>$$<br>    s = \frac{ 2 }{ T }  \frac{1-z^{-1}}{1+z^{-1}}  \<br>     z = \frac{1+(T/2)s}{1-(T/2)s}<br>$$</p>
+<p>The imaginary axis $s = j\Omega$ is mapped onto the unit circle $e^{j\omega}$</p>
+<p>$$<br>    \Omega = \frac{2}{T} tan(\omega/2)  \<br>    \omega = 2 arctan(\Omega T/2)<br>$$</p>
+<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/yMCUJ1FPPjsHdHqVWRLrRIOc1beGuwBNsxPPyFbwtTU!/b/dAEBAAAAAAAA&amp;bo=KAMFAgAAAAADBw4!&amp;rf=viewer_4" alt=""></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -130,7 +115,7 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2017/09/01/lowpass-filter-design/" data-title="lowpass_filter_design | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2017/09/02/filters/" data-title="Design of Discrete IIR Filter | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -139,19 +124,11 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/09/02/filters/" title="Design of Discrete IIR Filter">
-  <strong>PREVIOUS:</strong><br/>
-  <span>
-  Design of Discrete IIR Filter</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/09/01/analog-filter-design/"  title="analog_filter_design">
+<a href="/2017/09/01/lowpass-filter-design/"  title="lowpass_filter_design">
  <strong>NEXT:</strong><br/> 
- <span>analog_filter_design
+ <span>lowpass_filter_design
 </span>
 </a>
 </div>
@@ -161,7 +138,7 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="lowpass_filter_design" data-thread-key="lowpass-filter-design" data-author-key="Shikin" data-url="http://shikin.ga/post/lowpass-filter-design"></div>
+	<div class="ds-thread" data-title="Design of Discrete IIR Filter" data-thread-key="filters" data-author-key="Shikin" data-url="http://shikin.ga/post/filters"></div>
 	
 </section>
 
@@ -171,7 +148,7 @@ $$    |H_a(j\Omega) |^2 = \frac{1}{">
 
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Butterworth-Lowpass-Filter"><span class="toc-number">1.</span> <span class="toc-text">Butterworth Lowpass Filter</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Theory"><span class="toc-number">1.1.</span> <span class="toc-text">Theory</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example"><span class="toc-number">1.2.</span> <span class="toc-text">Example</span></a></li></ol></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Bilinear-Transformation"><span class="toc-number">1.</span> <span class="toc-text">Bilinear Transformation</span></a></li></ol>
   </div>
 
 <div id="asidepart">
