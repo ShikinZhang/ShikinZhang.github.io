@@ -7,7 +7,7 @@
   <meta name="360-site-verification" content="67fbcc5a67f4c65c057315b28fa0b2c8" />
 <meta name="google-site-verification" content="2GzxQ0VtXwTSUdmGm6DzcmhTzM_I9QmzCb_pzpMzD88" />
   
-    <title>issue fix | SK_Home</title>
+    <title>Installing AVR STUDIO 4 issue | SK_Home</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=3, minimum-scale=1">
     
     <meta name="author" content="Shikin">
@@ -80,12 +80,12 @@ WIN10 进入安全模式
 
     </header>
     <div id="container">
-      <div id="main" class="Installing AVR STUDIO 4 issue" itemscope itemprop="blogPost">
+      <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/10/09/issue/" title="issue fix" itemprop="url">issue fix</a>
+      <a href="/2017/10/09/issue/" title="Installing AVR STUDIO 4 issue" itemprop="url">Installing AVR STUDIO 4 issue</a>
   </h1>
   <p class="article-author">By
     
@@ -93,7 +93,7 @@ WIN10 进入安全模式
     </p>
   <p class="article-time">
     <time datetime="2017-10-09T01:44:03.000Z" itemprop="datePublished">2017-10-09</time>
-    更新日期:<time datetime="2017-10-09T01:55:51.180Z" itemprop="dateModified">2017-10-09</time>
+    更新日期:<time datetime="2017-10-09T01:57:33.802Z" itemprop="dateModified">2017-10-09</time>
     
   </p>
 </header>
@@ -126,7 +126,7 @@ WIN10 进入安全模式
 
 <div class="article-share" id="share">
 
-  <div data-url="http://shikin.ga/2017/10/09/issue/" data-title="issue fix | SK_Home" data-tsina="null" class="share clearfix">
+  <div data-url="http://shikin.ga/2017/10/09/issue/" data-title="Installing AVR STUDIO 4 issue | SK_Home" data-tsina="null" class="share clearfix">
   </div>
 
 </div>
@@ -149,13 +149,18 @@ WIN10 进入安全模式
 	
 <section class="comment">
 	
-	<div class="ds-thread" data-title="issue fix" data-thread-key="issue" data-author-key="Shikin" data-url="http://shikin.ga/post/issue"></div>
+	<div class="ds-thread" data-title="Installing AVR STUDIO 4 issue" data-thread-key="issue" data-author-key="Shikin" data-url="http://shikin.ga/post/issue"></div>
 	
 </section>
 
 
 </div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ISSUE"><span class="toc-number">1.</span> <span class="toc-text">ISSUE</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#WIN10-进入安全模式"><span class="toc-number">2.</span> <span class="toc-text">WIN10 进入安全模式</span></a></li></ol>
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -213,8 +218,8 @@ WIN10 进入安全模式
 
 </aside>
 </div>
-  </div>
-  <footer><div id="footer" >
+    </div>
+    <footer><div id="footer" >
     
             <p class="copyright"> © 2017 
 		
@@ -304,6 +309,46 @@ $(document).ready(function(){
 </script>
 
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"null"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script> 
 
 
 
@@ -409,5 +454,5 @@ ga('send', 'pageview');
 
 
   </body>
- </html>
+</html>
 
