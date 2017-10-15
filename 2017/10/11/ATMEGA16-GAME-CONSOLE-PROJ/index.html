@@ -82,7 +82,7 @@
     </p>
   <p class="article-time">
     <time datetime="2017-10-10T23:03:25.000Z" itemprop="datePublished">2017-10-11</time>
-    更新日期:<time datetime="2017-10-13T10:57:10.720Z" itemprop="dateModified">2017-10-13</time>
+    更新日期:<time datetime="2017-10-15T04:33:33.164Z" itemprop="dateModified">2017-10-15</time>
     
   </p>
 </header>
@@ -159,7 +159,7 @@
 <p>   while(!(SPSR &amp; (1&lt;&lt;SPIF)));<br>}</p>
 </blockquote>
 <h2 id="LCD-Configuration"><a href="#LCD-Configuration" class="headerlink" title="LCD Configuration"></a>LCD Configuration</h2><h3 id="Send-Command"><a href="#Send-Command" class="headerlink" title="Send Command"></a>Send Command</h3><p>LCD_CS set 0 , because the CS pin in LCD is negative logic. <br><br>LCD_CD set 0 , which means what the MOSI send is COMMAND.  <br><br>Using SPI send COMMAND. <br><br>LCD_CS set 1</p>
-<h3 id="Send-Data"><a href="#Send-Data" class="headerlink" title="Send Data"></a>Send Data</h3><p>LCD_CS set 0 , because the CS pin in LCD is negative logic. <br><br>LCD_CD set 0 , which means what the MOSI send is DATA.  <br><br>Using SPI send DATA. <br><br>LCD_CS set 1</p>
+<h3 id="Send-Data"><a href="#Send-Data" class="headerlink" title="Send Data"></a>Send Data</h3><p>LCD_CS set 0 , because the CS pin in LCD is negative logic. <br><br>LCD_CD set 1 , which means what the MOSI send is DATA.  <br><br>Using SPI send DATA. <br><br>LCD_CS set 1</p>
 <h3 id="Initialization"><a href="#Initialization" class="headerlink" title="Initialization"></a>Initialization</h3><p>The Initialization code can be found in LMS.</p>
 <h3 id="Select-Page"><a href="#Select-Page" class="headerlink" title="Select Page"></a>Select Page</h3><p>Some basic thing you should know what is Column and Page, which is illustrated in page 6 in LCD_dogs102-6e.pdf</p>
 <p>From page 12 in LCD controller DATASHEET, the high 4 bits of COMMEND is 1011(binary) and the low 4 bits of COMMAND is the page number.</p>
