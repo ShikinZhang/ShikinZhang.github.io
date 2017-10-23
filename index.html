@@ -170,96 +170,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <a id="more"></a>
-<h1 id="Timer-Counter-和-Interrupt"><a href="#Timer-Counter-和-Interrupt" class="headerlink" title="Timer/Counter 和 Interrupt"></a>Timer/Counter 和 Interrupt</h1><h2 id="Timer-Counter2-产生PWM控制LCD背光亮度"><a href="#Timer-Counter2-产生PWM控制LCD背光亮度" class="headerlink" title="Timer/Counter2 产生PWM控制LCD背光亮度"></a>Timer/Counter2 产生PWM控制LCD背光亮度</h2><p>因为我用PD7引脚产生的PWM去控制LCD的背光的亮度，查找PD7对应的Alternate Function是 Timer/Counter2 Output Compare Match Output， 所以对应使用Timer/Counter2</p>
-<h3 id="TCCR2-配置"><a href="#TCCR2-配置" class="headerlink" title="TCCR2 配置"></a>TCCR2 配置</h3><table>
-<thead>
-<tr>
-<th style="text-align:left">BIT</th>
-<th style="text-align:left">Function</th>
-<th style="text-align:left">配置</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">7</td>
-<td style="text-align:left">Force Output Compare</td>
-<td style="text-align:left">0</td>
-<td style="text-align:left">不用管，自己设置为0就好</td>
-</tr>
-<tr>
-<td style="text-align:left">3,6</td>
-<td style="text-align:left">WGM2(1:0): Waveform Generation Mode</td>
-<td style="text-align:left">11</td>
-<td style="text-align:left">设置成Fast PWM 模式</td>
-</tr>
-<tr>
-<td style="text-align:left">5:4</td>
-<td style="text-align:left">COM2（1:0）: Compare Match Output Mode</td>
-<td style="text-align:left">11</td>
-<td style="text-align:left">因为需要输出，所以Set OC2 on compare match</td>
-</tr>
-<tr>
-<td style="text-align:left">2:0</td>
-<td style="text-align:left">CS2(2:0): Clock Select</td>
-<td style="text-align:left">000</td>
-<td style="text-align:left">这个是时钟分频，开心就好，这里没有所谓</td>
-</tr>
-</tbody>
-</table>
-<p>因为在这里只是单纯的PWM输出，在系统内不需要中断来对应操作，所以其他的配置中断什么的寄存器不用管。</p>
-<p>然后直接设置ORC2这个寄存器就好，会根据这个寄存器的值，来控制PWM占空比。</p>
-<h2 id="Timer-Counter-1-配置定时器中断"><a href="#Timer-Counter-1-配置定时器中断" class="headerlink" title="Timer/Counter 1 配置定时器中断"></a>Timer/Counter 1 配置定时器中断</h2><p>使用 Timer/Counter 1 的定时器中断来控制整个系统，例如贪吃蛇游戏里，需要大概1秒钟蛇移动一格，因此在一次定时器中断中，控制蛇移动一格。所以在 Timer/Counter 1 中主要是配置去控制进入中断的时间。</p>
-<p>Timer/Counter 1 有很多模式，在这里配置的是用Normal Mode，因此很多寄存器直接使用默认的就好，所以只需要写TCNT1H, TCNT1L, TIMSK TCCR1B 这几个寄存器就好，其他的就默认配置成 Normal Mode </p>
-<h3 id="TIMSK"><a href="#TIMSK" class="headerlink" title="TIMSK"></a>TIMSK</h3><p>因为使用的是Normal Mode 直接是overflow的中断，所以在TIMSK将TOIE1(Timer/Counter1, Overflow Interrupt Enable) 设置为1就好。</p>
-<h3 id="TCCR1B"><a href="#TCCR1B" class="headerlink" title="TCCR1B"></a>TCCR1B</h3><p>查询 DATASHEET 113页面， WGM1 都是0 ICNC1和ICES1不需要管，只需要配置时钟分频即可。使用的外部晶振是8MHz，为了计算方便，使用8分频到1MHz，因此CS1(2:0)配置为010即可。</p>
-<h3 id="TCNT1"><a href="#TCNT1" class="headerlink" title="TCNT1"></a>TCNT1</h3><p>TCNT1 就是 value of the counter， 在 Normal Mode 中 TCNT1 计数到16位满之后，产生overflow中断（这一点也对应中断向量）。由于计数器的时钟分频后得到1MHz，以及16位对应最大的十进制数是65535，因此选个好计算的数50000作为计数的个数，从而每1/20秒(50ms)产生一次中断。 所以计算65535-50000 = 15535对应16进制数为0x3CAF,</p>
-<p>TCNT1分为两个部分TCNT1H和TCNT1L</p>
-<p>TCNT1H = 0X3C;<br>TCNT1L = 0XAF;</p>
-<p>即可。</p>
-<h2 id="按键中断"><a href="#按键中断" class="headerlink" title="按键中断"></a>按键中断</h2><p>如果在while循环中每次都要检测按键按下的情况，特别浪费资源，因此，当有一个按键按下的时候，进入中断，然后检测是哪一个按键按下后，再进行按键的检测。</p>
-<p>我在原理图上连接的按键中断是到PD2，对应的是Alternate Function 是External Interrupt 0 Input，所以之后配置INT0 即可</p>
-<h3 id="配置GICR-General-Interrupt-Control-Register"><a href="#配置GICR-General-Interrupt-Control-Register" class="headerlink" title="配置GICR(General Interrupt Control Register)"></a>配置GICR(General Interrupt Control Register)</h3><p>DATASHEET 48页对应寄存器说明，IVSEL和IVCE可以不用管（没有管能配置出来中断，就没管了）</p>
-<p>设置INT0位为1即可</p>
-<h3 id="配置MCUCR-MCU-Control-Register"><a href="#配置MCUCR-MCU-Control-Register" class="headerlink" title="配置MCUCR (MCU Control Register)"></a>配置MCUCR (MCU Control Register)</h3><p>中断可以配置成4种模式，低电平，任何逻辑，上升沿，下降沿。一般而言选择当有按键按下时进行进行中断触发，因此选择上升沿出发。</p>
-<p>对应在INT0中的上升沿出发，配置ISC0(1:0) = 11 即可。</p>
-<h1 id="LCD"><a href="#LCD" class="headerlink" title="LCD"></a>LCD</h1><h2 id="SPI-Configuration"><a href="#SPI-Configuration" class="headerlink" title="SPI Configuration"></a>SPI Configuration</h2><p>In SPI, the uController is master and the LCD is the slave, so set the SCK, MOSI pin as the OUTPUT and MISO as INPUT.</p>
-<p>Then from page 138 in ATMEGA16 DATASHEET, in initialization, just configure SPCR.</p>
-<blockquote>
-<p>SPCR = (1&lt;&lt;SPE)|(1&lt;&lt;MSTR)|(1&lt;&lt;SPR0); </p>
-</blockquote>
-<p>Then, the uController can send data by this function</p>
-<blockquote>
-<p>void SPI_MasterTransmit(char cData)<br>{</p>
-<p>   SPDR = cData;</p>
-<p>   while(!(SPSR &amp; (1&lt;&lt;SPIF)));<br>}</p>
-</blockquote>
-<h2 id="LCD-Configuration"><a href="#LCD-Configuration" class="headerlink" title="LCD Configuration"></a>LCD Configuration</h2><h3 id="Send-Command"><a href="#Send-Command" class="headerlink" title="Send Command"></a>Send Command</h3><p>LCD_CS set 0 , because the CS pin in LCD is negative logic. <br><br>LCD_CD set 0 , which means what the MOSI send is COMMAND.  <br><br>Using SPI send COMMAND. <br><br>LCD_CS set 1</p>
-<h3 id="Send-Data"><a href="#Send-Data" class="headerlink" title="Send Data"></a>Send Data</h3><p>LCD_CS set 0 , because the CS pin in LCD is negative logic. <br><br>LCD_CD set 1 , which means what the MOSI send is DATA.  <br><br>Using SPI send DATA. <br><br>LCD_CS set 1</p>
-<h3 id="Initialization"><a href="#Initialization" class="headerlink" title="Initialization"></a>Initialization</h3><p>The Initialization code can be found in LMS.</p>
-<h3 id="Select-Page"><a href="#Select-Page" class="headerlink" title="Select Page"></a>Select Page</h3><p>Some basic thing you should know what is Column and Page, which is illustrated in page 6 in LCD_dogs102-6e.pdf</p>
-<p>From page 12 in LCD controller DATASHEET, the high 4 bits of COMMEND is 1011(binary) and the low 4 bits of COMMAND is the page number.</p>
-<p>For example, </p>
-<blockquote>
-<p>LCD_command_tx(0xB2);</p>
-</blockquote>
-<p>this example select page 2 in LCD.</p>
-<h3 id="Select-Column"><a href="#Select-Column" class="headerlink" title="Select Column"></a>Select Column</h3><p>Since there are 0~101 columns in LCD, the bits of columns are more than 4 bits, so it cannot be selected as page.</p>
-<p>Actually, the number of columns can be expressed by 8 bits, which be divided to two 4 bits.</p>
-<p>for example</p>
-<blockquote>
-<p>LCD_command_tx(0x02); <br><br>LCD_command_tx(0x12);</p>
-</blockquote>
-<p>this example select 34th(0x22) columns.</p>
-<h3 id="Send-Data-to-draw"><a href="#Send-Data-to-draw" class="headerlink" title="Send Data to draw"></a>Send Data to draw</h3><p>After we have selected the Column and Page, we can send data to draw something on LCD.</p>
-<p>simple example</p>
-<blockquote>
-<p>LCD_command_tx(0x02); <br><br>LCD_command_tx(0x12); <br><br>LCD_command_tx(0xB2); <br></p>
-<p>LCD_data_tx(0xFF);</p>
-</blockquote>
-<p>this example select 34th column and 2nd page. And then write all of this part 1, so there shoud be a line on 34th column and 2nd 8 pixels. Actually is 35 column and 3rd 8 pixels, becasue in code, everything start from 0 not 1.</p>
-
+        <h1 id="Timer-Counter-和-Interrupt"><a href="#Timer-Counter-和-Interrupt" class="headerlink" title="Timer/Counter 和 Interrupt"></a>Timer/Counter 和 Interrupt</h1><h2 id="Timer-Counter2-产生PWM控制LCD背光亮度"><a href="#Timer-Counter2-产生PWM控制LCD背光亮度" class="headerlink" title="Timer/Counter2 产生PWM控制LCD背光亮度"></a>Timer/Counter2 产生PWM控制LCD背光亮度</h2><p>因为我用PD7引脚产生的PWM去控制LCD的背光的亮度，查找PD7对应的Alternate Function是 Timer/Counter2 Output Compare Match Output， 所以对应使用Timer/Counter2<br>
+        
+          <a class="article-more-a" href="/2017/10/11/ATMEGA16-GAME-CONSOLE-PROJ/#more">more >></a>
+        
       
 
       
@@ -334,16 +248,9 @@
       
         <h1 id="ISSUE"><a href="#ISSUE" class="headerlink" title="ISSUE"></a>ISSUE</h1><p>从LMS上下载的AVR STUDIO 会遇到一个问题，点击到installing的时候，会最小化然后就安装不了。</p>
 <h1 id="SOLUTION"><a href="#SOLUTION" class="headerlink" title="SOLUTION"></a>SOLUTION</h1><p>进入安全模式下安装。</p>
-<h1 id="WIN10-进入安全模式"><a href="#WIN10-进入安全模式" class="headerlink" title="WIN10 进入安全模式"></a>WIN10 进入安全模式</h1><p><img src="https://imgsa.baidu.com/exp/w=480/sign=096510a31dd5ad6eaaf965e2b1ca39a3/eac4b74543a98226148200408c82b9014a90eb12.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=c77500408c82b9013dadc23b438ca97e/a8ec8a13632762d0ff8a8fd8a6ec08fa513dc624.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=5d5455acfdedab6474724cc8c737af81/1e30e924b899a901b55370511b950a7b0208f577.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=7d2acb7d2e34349b74066f8df9ea1521/8c1001e93901213fe00964bb52e736d12f2e959a.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=5259d80b163853438ccf8629a312b01f/e4dde71190ef76c6c09cd04c9b16fdfaaf51670e.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=3e18f673be99a9013b355a3e2d950a58/0b46f21fbe096b63d70c74370a338744ebf8acbb.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=70e6cb5033fae6cd0cb4aa693fb20f9e/b21bb051f8198618d1b7c5e34ced2e738ad4e6e1.jpg" alt=""></p>
-<p><img src="https://imgsa.baidu.com/exp/w=480/sign=c0b88d39dbc451daf6f60de386fc52a5/42a98226cffc1e1751ef99564c90f603738de901.jpg" alt=""></p>
-<p>按 4 或者 F4 键进入安全模式，然后安装AVR STUIDO 4.19 即可</p>
-
+        
+          <a class="article-more-a" href="/2017/10/09/issue/#more">more >></a>
+        
       
 
       
