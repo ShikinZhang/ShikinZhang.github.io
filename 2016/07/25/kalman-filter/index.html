@@ -9,18 +9,18 @@
   <title>卡尔曼滤波器 | SK_Home</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
-卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \pt^-       &amp;amp; = FP{t-1}F^T+Q \\hat{x}_t   &amp;amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \K_t         &amp;">
+只写了一半">
 <meta property="og:type" content="article">
 <meta property="og:title" content="卡尔曼滤波器">
 <meta property="og:url" content="http://yoursite.com/2016/07/25/kalman-filter/index.html">
 <meta property="og:site_name" content="SK_Home">
 <meta property="og:description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
-卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \pt^-       &amp;amp; = FP{t-1}F^T+Q \\hat{x}_t   &amp;amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \K_t         &amp;">
-<meta property="og:updated_time" content="2017-09-01T10:51:58.496Z">
+只写了一半">
+<meta property="og:updated_time" content="2017-10-23T04:03:58.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="卡尔曼滤波器">
 <meta name="twitter:description" content="卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。
-卡尔曼滤波器公式$$\begin{align}\hat{x}t^- &amp;amp; = F\hat{x}{t-1} + Bu_t \pt^-       &amp;amp; = FP{t-1}F^T+Q \\hat{x}_t   &amp;amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \K_t         &amp;">
+只写了一半">
   
     <link rel="alternative" href="/atom.xml" title="SK_Home" type="application/atom+xml">
   
@@ -171,6 +171,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。</p>
+<p>只写了一半<br><a id="more"></a></p>
 <h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}<br>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \<br>p<em>t^-       &amp; = FP</em>{t-1}F^T+Q \<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \<br>P_t         &amp; = (I-K_tH)P_t^-<br>\end{align}<br>$$</p>
 <h2 id="简单小车运动模型"><a href="#简单小车运动模型" class="headerlink" title="简单小车运动模型"></a>简单小车运动模型</h2><h3 id="运动学公式"><a href="#运动学公式" class="headerlink" title="运动学公式"></a>运动学公式</h3><p>假设小车在路上行驶，其状态用<br>$$<br>\begin{align}<br>    \hat{x}_{t-1}^- = [\begin{matrix} p \ v \end{matrix}]<br>\end{align}<br>$$<br>p是小车在t-1时刻的位置，v是小车在t-1时刻的速度。<br><br><br>在不考虑状态量$u_t$的情况下，下一时刻状态为<br>$$<br>\begin{align}<br>    \hat{x}<em>t^-=F\cdot \hat{x}</em>{t-1}^-<br>\end{align}<br>$$</p>
 <p>其中F为状态转移矩阵，在该模型中，F为</p>

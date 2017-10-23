@@ -168,21 +168,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在MATLAB的Simulink下的直流电机模型与简介。</p>
-<h2 id="电学模型"><a href="#电学模型" class="headerlink" title="电学模型"></a>电学模型</h2><h3 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>$$<br>\begin{align}<br>i(t) &amp;= C\cfrac{du}{dt}\\<br>u(t) &amp;= L\cfrac{di}{dt}\<br>\end{align}<br>$$<br>公式 (1) 是电容器件与所加电压和流过的电流的关系<br><br>公式 (2) 是电感器件与所加电压和流过的电流的关系<br></p>
-<h3 id="电机电学模型"><a href="#电机电学模型" class="headerlink" title="电机电学模型"></a>电机电学模型</h3><p>电机是电感型的器件，所以对应的是公式(2)<br><br>并且控制输入的电压值所以需要进行公式变形<br><br>将公式(2)进行变形，写成积分的形式如下<br><br>$$<br>\begin{align}<br>i(t) = \cfrac{1}{L}\int{}u(t)dt\<br>\end{align}<br>$$<br>将公式 (3) 所表示的内容在Simulink中实现如下图</p>
-<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/MFpd6REBRZyLWfEwk5TkXH1tE1N1nPsduJfrOmMrrKU!/b/dI0BAAAAAAAA&amp;bo=uQRQAQAAAAADB84!&amp;rf=viewer_4" alt=""> <br> </p>
-<p>输入的电压乘以电感的倒数然后积分得到电流。<br></p>
-<h3 id="电机模型的修正"><a href="#电机模型的修正" class="headerlink" title="电机模型的修正"></a>电机模型的修正</h3><p>由于电感实际上也是有电阻的<br><br>那么在模型中真正用于积分的电压需要减去电阻分去的电压<br>因此模型电学模型修正如下图<br><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/CJYcEQnq3pF0rsThpNdkKL2DkFJ0U2sRMakpIeiMBOM!/b/dG8BAAAAAAAA&amp;bo=wQN6AQAAAAADAJw!&amp;rf=viewer_4" alt=""> <br><br>电感电阻的分压由电流乘以电阻得到。<br><br>那么电学的模型在此可以告一段落了，接下来介绍力学的模型。</p>
-<h2 id="力学模型"><a href="#力学模型" class="headerlink" title="力学模型"></a>力学模型</h2><h3 id="基本介绍-1"><a href="#基本介绍-1" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>角加速度，转动惯量，扭矩的关系如公式(4)所示<br>$$<br>\begin{align}<br>T = J\beta<br>\end{align}<br>$$<br>其中T是扭矩，J是转动惯量，β是角加速度。<br></p>
-<h3 id="电机力学模型"><a href="#电机力学模型" class="headerlink" title="电机力学模型"></a>电机力学模型</h3><p>角加速度的积分得到角速度，也就是得到转速，则公式变为</p>
-<p>$$<br>\begin{align}<br>\omega = \cfrac{1}{J}\int{}Tdt<br>\end{align}<br>$$</p>
-<p>公式 (5) 在Simulink模型中实现如图<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/gPQf4ESy1gCHbsQe9*5y9H71fuwxxAbA3vfK10STaTQ!/b/dA0BAAAAAAAA&amp;bo=owO8AAAAAAADADk!&amp;rf=viewer_4" alt=""> <br></p>
-<h3 id="电机力学模型修正"><a href="#电机力学模型修正" class="headerlink" title="电机力学模型修正"></a>电机力学模型修正</h3><p>在真实中<br><br>电机旋转时存在一定的阻尼,存在一个扭矩，且该扭矩与转速成正比<br><br>电机也存在负载，因此存在一个负载的扭矩<br><br>因此对上述模型需要进行修正<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/3BEsPzmXoC8Cwna6WxWJwAMZmFEz8FW6WrFB3nd4K*s!/b/dNoAAAAAAAAA&amp;bo=oAPoAQAAAAADAG8!&amp;rf=viewer_4" alt=""> <br><br>电机的输入的扭矩需要减去负载的扭矩和阻尼所产生的扭矩<br></p>
-<h2 id="电机模型"><a href="#电机模型" class="headerlink" title="电机模型"></a>电机模型</h2><h3 id="基本介绍-2"><a href="#基本介绍-2" class="headerlink" title="基本介绍"></a>基本介绍</h3><p>电机产生的扭矩与电流成正比<br><br>电机旋转之后存在一个反向电动势，于转速成正比<br><br>用公式表示如下<br>$$<br>\begin{align}<br>E &amp;= K_e \omega\\<br>T &amp;= K_m I<br>\end{align}<br>$$<br>其中E为反向电动势，T为电机的扭矩</p>
-<h3 id="模型合并"><a href="#模型合并" class="headerlink" title="模型合并"></a>模型合并</h3><p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/E1vpD9dhH0dV8.HMIV0HKKXydjDNgescw5Wz8kRNuNw!/b/dOMAAAAAAAAA&amp;bo=.wTbAQAAAAADAAA!&amp;rf=viewer_4" alt=""> <br></p>
-<p>左边部分为电学量，右边部分为力学量。<br><br>电学量与力学量之间由系数Ke和Km进行转换。<br><br>就此得到完整的电机模型。<br><br><br><br>具体的系数需要参考电机的手册以及进行测量得到。</p>
-
+        <p>在MATLAB的Simulink下的直流电机模型与简介。<br>
+        
+          <a class="article-more-a" href="/2016/07/26/motor-model/#more">more >></a>
+        
       
 
       
@@ -255,31 +244,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>PD Controller Implement in Simulink. It is very simple model so that if I forget how to build a PID controller system, I can use this model to build a simple PID controller system.</p>
-<h2 id="PID-Pseudo-Code"><a href="#PID-Pseudo-Code" class="headerlink" title="PID Pseudo Code"></a>PID Pseudo Code</h2><p><img src="http://a1.qpic.cn/psb?/V118uAby40NSw2/KfjbgZaELXkM*sTvMAFItL0WEM0m74sSw6QtqRSUCE4!/b/dAsBAAAAAAAA&amp;bo=ZgOIAQAAAAAFB8g!&amp;rf=viewer_4" alt=""></p>
-<p>The parameters Kp, Ki and Kd can be calculated by Simulink.</p>
-<p>In this guide, We implement a PD Controller, so we only need concentrate on Kp and Kd</p>
-<h2 id="PD-model-in-Simulink"><a href="#PD-model-in-Simulink" class="headerlink" title="PD model in Simulink"></a>PD model in Simulink</h2><p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/pvyZ.JuwtQ*dr*VKpW7cHALHFTdjxtuDDJsK4aRqB4g!/b/dA0BAAAAAAAA&amp;bo=9gOAAgAAAAAFAFQ!&amp;rf=viewer_4" alt=""><br>Here is the model in Simulink. you can find every block in Simulink and add it to model. The block Zere-Order Hold and Intergrator are only used to get the measured position, so in Robot model, these two blocks are not really exist.</p>
-<p>Then we must unify the sample time. (The block Delay, PD controller and Zero-Order Hold)</p>
-<p>The feedback signal is position. As for Velocity feedback, it is the derivative of position and generated in PD controller block.</p>
-<hr>
-<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/JDEyHeNGpLvMRtyeLjY2qFm93*0HdbFe5CHrfvrKXmc!/b/dAwBAAAAAAAA&amp;bo=6AKAAgAAAAAFAEs!&amp;rf=viewer_4" alt=""></p>
-<p>Here is the Signal Builder which generates the simulation signal for desired position.</p>
-<hr>
-<p><img src="http://a2.qpic.cn/psb?/V118uAby40NSw2/tYZ0ygVeOx9S.aRTDenO*Yp4yTP6lVGtmm8XntoUS5s!/b/dAwBAAAAAAAA&amp;bo=xgKAAgAAAAAFAGU!&amp;rf=viewer_4" alt=""></p>
-<p>Here is the configuration of PD controller</p>
-<p>‘Controller’ is selected as PD. ‘Sample time’ is set as 0.001. Then you need click ‘Apply’ button so that you can click ‘Tune…’ button for next interface.</p>
-<hr>
-<p><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/RQYcWaq*aZ1q54EABaYip9PDliuN65zqsS6x02CkrFw!/b/dA0BAAAAAAAA&amp;bo=YQOAAgAAAAAFAMM!&amp;rf=viewer_4" alt=""></p>
-<p>Here is the PID Tuner.</p>
-<p>In this interface, you can set proper ‘Respose Time’ and click ‘Update Block’ button if you are satisfied with the curve. By the way, you can click ‘Show Parameters’ button to see the parameters here and of course you can see the parameters in PD controller configuration.</p>
-<p>##Simulation Result<br><img src="http://a3.qpic.cn/psb?/V118uAby40NSw2/Xkozqny8cPOxbwtnbdG7dNcw6oHxXPM8zMVs0MnNwhs!/b/dA0BAAAAAAAA&amp;bo=WwSAAgAAAAAFAP4!&amp;rf=viewer_4" alt=""></p>
-<p>The 1st diagram is the Disired position</p>
-<p>The 2nd diagram is the Measured position</p>
-<p>The 3rd diagram is the Velocity</p>
-<p>THe 4th diagram is the Velocity error</p>
-<h2 id="Not-Tested-Code"><a href="#Not-Tested-Code" class="headerlink" title="Not Tested Code"></a>Not Tested Code</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">float</span> p_m,p_d;							<span class="comment">// input</span></div><div class="line"><span class="keyword">float</span> err,err_delay,kp,kd,v,v_delay;	<span class="comment">// process</span></div><div class="line"><span class="keyword">float</span> v_err								<span class="comment">// output</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">Timer_Handler</span><span class="params">()</span> 					<span class="comment">// timer handler function in MCU and it just ensures the Sample time is 1ms</span></span></div><div class="line">&#123;</div><div class="line">	p_m = get_position();							<span class="comment">// get the measured position</span></div><div class="line">	err_delay = err;								<span class="comment">// get error delay</span></div><div class="line">	err = p_d - p_m;								<span class="comment">// get error</span></div><div class="line">	v_delay = v;									<span class="comment">// get velocity delay</span></div><div class="line">	v = kp*err + kd * (err-err_delay)/<span class="number">0.001</span>;		<span class="comment">// calculate the velocity and 0.001 is the sample time</span></div><div class="line">	v_err = v - v_delay;							<span class="comment">// calculate the velocity error</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-
+        <p>PD Controller Implement in Simulink. It is very simple model so that if I forget how to build a PID controller system, I can use this model to build a simple PID controller system.<br>
+        
+          <a class="article-more-a" href="/2016/07/25/PD-Controller/#more">more >></a>
+        
       
 
       
@@ -353,21 +321,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>卡尔曼滤波器是最佳线性滤波器，有着实现简单并且纯时域变换的特点。</p>
-<h2 id="卡尔曼滤波器公式"><a href="#卡尔曼滤波器公式" class="headerlink" title="卡尔曼滤波器公式"></a>卡尔曼滤波器公式</h2><p>$$<br>\begin{align}<br>\hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t \<br>p<em>t^-       &amp; = FP</em>{t-1}F^T+Q \<br>\hat{x}_t   &amp; = \hat{x}_t^- + K_t(Z_t-H\hat{x}_t^-) \<br>K_t         &amp; = P_t^-H^T(HP_t^-H^T+R)^{-1} \<br>P_t         &amp; = (I-K_tH)P_t^-<br>\end{align}<br>$$</p>
-<h2 id="简单小车运动模型"><a href="#简单小车运动模型" class="headerlink" title="简单小车运动模型"></a>简单小车运动模型</h2><h3 id="运动学公式"><a href="#运动学公式" class="headerlink" title="运动学公式"></a>运动学公式</h3><p>假设小车在路上行驶，其状态用<br>$$<br>\begin{align}<br>    \hat{x}_{t-1}^- = [\begin{matrix} p \ v \end{matrix}]<br>\end{align}<br>$$<br>p是小车在t-1时刻的位置，v是小车在t-1时刻的速度。<br><br><br>在不考虑状态量$u_t$的情况下，下一时刻状态为<br>$$<br>\begin{align}<br>    \hat{x}<em>t^-=F\cdot \hat{x}</em>{t-1}^-<br>\end{align}<br>$$</p>
-<p>其中F为状态转移矩阵，在该模型中，F为</p>
-<p>$$<br>\begin{align}<br>    F = [\begin{matrix} 1 &amp; \Delta t \ 0 &amp; 1 \end{matrix}]<br>\end{align}<br>$$</p>
-<p>在考虑状态量$u_t$的情况下，得到卡尔曼滤波器的第一个公式</p>
-<p>$$<br>\begin{align}<br>    \hat{x}<em>t^- &amp; = F\hat{x}</em>{t-1} + Bu_t<br>\end{align}<br>$$</p>
-<p>在该模型中，我们假设这个控制量为加速度，则矩阵B可以表示为</p>
-<p>$$<br>\begin{align}<br>    B = [\begin{matrix} \cfrac{1}{2}\Delta t^2 \ \Delta t \end{matrix}]<br>\end{align}<br>$$</p>
-<p>这样我们得到运动学公式</p>
-<h3 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h3><p>在这里，我们假设的噪声都是高斯分布的噪声，其方差为$\sigma $。<br><br>在该模型中协方差矩阵为</p>
-<p>$$<br>\begin{align}<br>    P<em>{t-1} =[<br>    \begin{matrix}<br>        \sigma </em>{11} &amp;\sigma <em>{12}\<br>        \sigma </em>{21} &amp;\sigma _{22}<br>    \end{matrix}]<br>\end{align}<br>$$</p>
-<p>这里正对角系数 $\sigma <em>{11}$ 和 $\sigma </em>{22}$ 分别为位置和速度的测量噪声的方差。</p>
-<p>反对角系数 $\sigma <em>{12} = \sigma </em>{21}$ 为噪声的相关性</p>
-<p>$$<br>\begin{aligned}<br>\dot{x} &amp; = \sigma(y-x) \<br>\dot{y} &amp; = \rho x - y - xz \<br>\dot{z} &amp; = -\beta z + xy \<br>    \dot{z} &amp; = x_x<br>\end{aligned}<br>$$</p>
-
+<p>只写了一半<br>
+        
+          <a class="article-more-a" href="/2016/07/25/kalman-filter/#more">more >></a>
+        
       
 
       
@@ -440,16 +397,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
+        <p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.<br>
+        
+          <a class="article-more-a" href="/2016/07/21/hello-world/#more">more >></a>
+        
       
 
       
@@ -511,65 +462,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>配置用于MicroMouse的陀螺仪。</p>
-<hr>
-<hr>
-<hr>
-<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>加速度测量量程 +-2g<br>最高采样率<br>使用 pypass mode</p>
-<hr>
-<p>不使用中断(INT)<br>不使用高通滤波器(High Pase Filter)<br>不使用低通滤波器(Low Pase Filter)<br>不使用FIFO</p>
-<hr>
-<h2 id="配置表"><a href="#配置表" class="headerlink" title="配置表"></a>配置表</h2><table>
-<thead>
-<tr>
-<th style="text-align:left">REG Address</th>
-<th style="text-align:left">Data</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">10h</td>
-<td style="text-align:left">DBh</td>
-</tr>
-<tr>
-<td style="text-align:left">11h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">12h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">1Eh</td>
-<td style="text-align:left">38h</td>
-</tr>
-<tr>
-<td style="text-align:left">20h</td>
-<td style="text-align:left">C4h</td>
-</tr>
-<tr>
-<td style="text-align:left">21h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">22h</td>
-<td style="text-align:left">04h</td>
-</tr>
-<tr>
-<td style="text-align:left">23h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">24h</td>
-<td style="text-align:left">00h</td>
-</tr>
-<tr>
-<td style="text-align:left">2Eh</td>
-<td style="text-align:left">00h</td>
-</tr>
-</tbody>
-</table>
-
+        <p>配置用于MicroMouse的陀螺仪。<br>
+        
+          <a class="article-more-a" href="/2016/07/21/hello/#more">more >></a>
+        
       
 
       
