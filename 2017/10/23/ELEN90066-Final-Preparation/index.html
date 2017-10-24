@@ -18,7 +18,7 @@
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/costfunction.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-1.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-2.png?raw=true">
-<meta property="og:updated_time" content="2017-10-24T11:10:12.985Z">
+<meta property="og:updated_time" content="2017-10-24T23:20:43.702Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELEN90066 Final Preparation">
 <meta name="twitter:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
@@ -488,6 +488,40 @@
 <p><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/costfunction.png?raw=true" alt=""></p>
 <p><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-1.png?raw=true" alt=""></p>
 <p><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-2.png?raw=true" alt=""></p>
+<h3 id="LEC-22"><a href="#LEC-22" class="headerlink" title="LEC 22"></a>LEC 22</h3><p><b>Notation</b>: All algorithms are classfied using $\alpha | \beta | \gamma$</p>
+<ul>
+<li><b>$\alpha$</b> the machine environment on which the task set has to be scheduled (uniprocessor, multiprocessor, distributed architecture, and so on).</li>
+<li><b>$\beta$</b> task and resource characteristics (preemptive, independent versus precedence constrained, synchronous activations, and so on).</li>
+<li><b>$\gamma$</b> the optimality criterion (performance measure) to be followed in the schedule</li>
+</ul>
+<p><b>example</b></p>
+<ul>
+<li><p><b>1|prec|Lmax</b></p>
+<ul>
+<li>Denotes the problem of scheduling a set of tasks with <b>precedence constraints</b> on a <b>uniprocessor</b> machine in order to <b>minimize the maximum lateness</b>. <br></li>
+<li>If <b>no additional constraints</b> are indicated in the second field, <b>preemption</b> is allowed at any time, and tasks can have arbitrary arrivals.</li>
+</ul>
+</li>
+<li><p><b>3 | no prem | $\sum(f_i)$</b></p>
+<ul>
+<li>Denotes the problem of scheduling a set of tasks on a <b>three-processor machine</b>.</li>
+<li><b>Preemption</b> is <b>not allowed</b> and the objective is to <b>minimize the sum of the finishing times</b>.</li>
+<li>Since no other constraints are indicated in the second field, tasks do not have precedence nor resource constraints but have arbitrary arrival times.</li>
+</ul>
+</li>
+<li><b>2 | sync | $\sum (Late_i)$</b><ul>
+<li>Denotes the problem of scheduling a set of tasks on a <b>two processor machine</b>.</li>
+<li>Tasks have <b>synchronous arrival times</b> and do not have other constraints. The objective is to <b>minimize the number of late tasks</b>.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Earliest Due Date (EDD)</p>
+<p>Assume, all task are activated at time t = 0. <br><br>Each job $J_i$ can be completely characterized by :</p>
+<ul>
+<li>A computation time $C_i$</li>
+<li>Relative deadline $D_i$</li>
+</ul>
 
       
 
