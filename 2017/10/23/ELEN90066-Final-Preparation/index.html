@@ -14,10 +14,12 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/23/ELEN90066-Final-Preparation/index.html">
 <meta property="og:site_name" content="SK_Home">
 <meta property="og:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
-<meta property="og:updated_time" content="2017-10-24T10:12:21.850Z">
+<meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/timing.png?raw=true">
+<meta property="og:updated_time" content="2017-10-24T10:57:22.522Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELEN90066 Final Preparation">
 <meta name="twitter:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
+<meta name="twitter:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/timing.png?raw=true">
   
     <link rel="alternative" href="/atom.xml" title="SK_Home" type="application/atom+xml">
   
@@ -448,6 +450,38 @@
 <li><b>Schedulable</b>: A set of tasks is <b>said to be schedulable</b> if there exists <b>at least one algorithm</b> that can produce a <b>feasible schedule</b>.</li>
 </ul>
 <hr>
+<p>Real-time Constraints</p>
+<ul>
+<li>Timing<ul>
+<li><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/timing.png?raw=true" alt=""></li>
+</ul>
+</li>
+<li>Precedence relations<ul>
+<li>Certain applications have computational activities that cannot be executed in arbitrary order</li>
+<li>Some precedence relations defined at the design stage</li>
+<li>Precedence relations are described through a directed acyclic graph G</li>
+<li>Notation of Precedence relations<ul>
+<li>$J_a &lt; J_b$, $J_a$ is a predecessor of task $J_b$,  G contains a <b>directed path</b> from node $J_a$ to node $J_b$</li>
+<li>$J_a \rightarrow J_b$, $J_a$ is an immediate predecessor of $J_b$, $J_a$, G contains <b>an arc directed</b> from node $J_a$ to node $J_b$</li>
+</ul>
+</li>
+<li>EXAMPLE: Visual Recognition of Objects</li>
+</ul>
+</li>
+<li>Resources<ul>
+<li>Any software structure that can be used by the process to advance its execution</li>
+<li>Types<ul>
+<li>Private resource : a resource dedicated to a particular process</li>
+<li>Shared resource : a resource that can be used by more than on task</li>
+<li><b>Mutually exclusive</b> resource : a resource R that <b>cannot</b> be accessed by a task if another task is inside the R, manipulating its data structures</li>
+<li>Critical section : a piece of code executed under mutual exclusion constraints</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Real-time Systems Scheduling</p>
 
       
 
