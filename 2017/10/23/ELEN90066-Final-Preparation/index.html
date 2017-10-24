@@ -14,12 +14,10 @@
 <meta property="og:url" content="http://yoursite.com/2017/10/23/ELEN90066-Final-Preparation/index.html">
 <meta property="og:site_name" content="SK_Home">
 <meta property="og:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
-<meta property="og:image" content="http://yoursite.com/assets/blogimg/reasonable_condition.png">
-<meta property="og:updated_time" content="2017-10-24T03:56:21.981Z">
+<meta property="og:updated_time" content="2017-10-24T10:12:21.850Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELEN90066 Final Preparation">
 <meta name="twitter:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
-<meta name="twitter:image" content="http://yoursite.com/assets/blogimg/reasonable_condition.png">
   
     <link rel="alternative" href="/atom.xml" title="SK_Home" type="application/atom+xml">
   
@@ -287,12 +285,169 @@
 <li>Event taks place at an instant of time and does not have a duration.</li>
 </ul>
 <h3 id="All-clocks-of-an-ensemble-are-externally-synchronized-with-an-accuracy-A-What-is-at-most-precision-with-which-the-ensemble-is-also-internally-synchronized"><a href="#All-clocks-of-an-ensemble-are-externally-synchronized-with-an-accuracy-A-What-is-at-most-precision-with-which-the-ensemble-is-also-internally-synchronized" class="headerlink" title="All clocks of an ensemble are externally synchronized with an accuracy A. What is at most precision with which the ensemble is also internally synchronized?"></a>All clocks of an ensemble are externally synchronized with an accuracy A. What is at most precision with which the ensemble is also internally synchronized?</h3><p>2A</p>
-<h3 id="LEC-19"><a href="#LEC-19" class="headerlink" title="LEC 19"></a>LEC 19</h3><p><img src="/assets/blogimg/reasonable_condition.png" width="500"></p>
-
-
-
-
-
+<h3 id="LEC-19"><a href="#LEC-19" class="headerlink" title="LEC 19"></a>LEC 19</h3><p>Global time t is reasonable if for all local implementations, $\Pi$ is the precision, <b>MIGHT BE</b> diffrence of the same tick in macro of clock i and clock j in Lecture Slides.</p>
+<p>$$ g^{global} &gt; \Pi $$</p>
+<p>The reasonableness condition ensures that:</p>
+<ul>
+<li>the synchronization error is less than one macrogranule</li>
+<li>for any event e, $|t^j(e) - t^k(e)| \leq 1$</li>
+</ul>
+<hr>
+<p>Fundamental Limits of Time Measurement</p>
+<ul>
+<li>If a single event is observed by two different nodes, there is always the possibility that the time-stamps differ by one tick. <br> A one-tick difference in the time-stamps of two events is not sufficient to re-establish the temporal order of the events from their timestamps</li>
+<li>True duration $d<em>{true}$ of an interval is bounded by: $d</em>{obs} - 2g^{global} &lt; d<em>{true} &lt; d</em>{obs} + 2g^{global}$</li>
+<li>The temporal order of two events can be recovered from their time-stamps if the difference between their time-stamps is equal to or greater than 2 ticks.</li>
+</ul>
+<hr>
+<p>Master-Slave Synchronization</p>
+<ul>
+<li>Master periodically sends the value of its time counter in synchronization messages to all nodes</li>
+<li>The slave records the time-stamp of message arrival</li>
+<li>Difference between the master’s time and the recorded slave’s time-stamp of message arrival</li>
+<li>Corrected by the known latency of the message transport</li>
+<li>This gives a measure of the deviation of the clock of the master from the clock of the slave</li>
+<li>The slave then corrects its clock by this deviation to bring it into agreement with the master’s clock</li>
+</ul>
+<hr>
+<p><b>QUIZ</b></p>
+<p>Scenario:<br><br>You have an ensemble of N clocks in a private network. Each clock has a perfect oscillator, ie., the drift rates of all the local clocks are zero</p>
+<p>Question: <br><br>Is it possible to internally synchronize the clocks greater than precision $\Pi$?</p>
+<p>IMPOSSIBILITY</p>
+<p>It is not possible to internally synchronize the clocks of an ensemble consisting of <b>N</b> nodes to a better precision than</p>
+<p>$$ \Pi = \epsilon （1 - \frac{1}{N})$$</p>
+<p>$\epsilon$ : jitter <br><br>$\Pi$ : precision</p>
+<hr>
+<h3 id="LEC-20"><a href="#LEC-20" class="headerlink" title="LEC 20"></a>LEC 20</h3><p>Synchronize from another machine that provides time information: time server</p>
+<ol>
+<li>Cristian’s Algorithm</li>
+</ol>
+<p>$$ T<em>p = T</em>{server} + \frac{T_1 - T_0}{2} $$</p>
+<ul>
+<li><b>Elapsed time</b> : $T_1 = T_0$</li>
+<li><b>Timestamp guess</b> : $\frac{T_1 - T_0}{2}$</li>
+<li><b>Set time of the process P</b>: $T_{server} + \frac{T_1 - T_0}{2}$</li>
+</ul>
+<p>Limitations of Cristian’s Algorithm</p>
+<ul>
+<li>Suitable for deterministic LAN environment of Intranet</li>
+<li>Problem of failure of single time sever<ul>
+<li>Redundancy through a group of servers (multicasting)</li>
+<li>However, how to decide if replay varies (Byzantine)</li>
+</ul>
+</li>
+<li>Imposter server providing false clock readings<ul>
+<li>Subject to malicious interference</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>Berkeley Algorithm</li>
+</ol>
+<ul>
+<li>Request timestamps from all slaves</li>
+<li>Compute a fault-tolerant average<ul>
+<li>A subset of clocks are chosen such that they do not differ much in time</li>
+<li>If a clock deviates from a specified limit from the rest, it is ignored</li>
+<li>Then, average is computed</li>
+<li>Offset is sent to the slaves and maser corrects its own clock</li>
+</ul>
+</li>
+<li>Send offset to clients</li>
+</ul>
+<hr>
+<p>Why synchronization is difficult in wireless devices?</p>
+<ul>
+<li>Non-deterministic delay<ul>
+<li>Send time and Access time<ul>
+<li>dependent on factors such as the instantaneous load on the sender’s CPU and the network.</li>
+<li>the most nondeterministic and difficult to estimate</li>
+</ul>
+</li>
+<li>Propagation Time<ul>
+<li>Depends on the physical media</li>
+<li>For LAN this is typically negligible. For UTP copper cable (speed $2 \times 10^9$), 200 meters, delay 1us.</li>
+</ul>
+</li>
+<li>Receive Time<ul>
+<li>Depends on interpreting the received message</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Reference Broadcast Synchronization</p>
+<blockquote>
+<p>Strategically give up this part</p>
+</blockquote>
+<h3 id="LEC-21"><a href="#LEC-21" class="headerlink" title="LEC 21"></a>LEC 21</h3><p>Limitations of current real-time systems<br>…</p>
+<p>Desirable features of real-time systems</p>
+<ul>
+<li><b>Timeliness</b> (explicit timing constraints)</li>
+<li><b>Predictability</b> (scheduling decision)</li>
+<li><b>Efficiency</b> (space, weight, energy, memory)</li>
+<li><b>Robustness</b> (manage peak load conditions)</li>
+<li><b>Fault tolerance</b> (software and hardware failures)</li>
+<li><b>Maintainability</b> (modular structure)</li>
+</ul>
+<hr>
+<p>Scheduling Concepts</p>
+<ul>
+<li><b>Process</b>:<ul>
+<li>a process is a computation that is executed by the CPU in a sequential fashion</li>
+</ul>
+</li>
+<li><b>Scheduling policy</b>:<ul>
+<li>the assignment of the CPU to execute a set of concurrent tasks according to a predefined criterion</li>
+</ul>
+</li>
+<li><b>Scheduling algorithm</b>:<ul>
+<li>the set of rules that, at any time, determines the order in which tasks are executed</li>
+</ul>
+</li>
+<li><b>Dispatching</b>:<ul>
+<li>The specific operation of allocating the CPU to a task selected by the scheduling algorithm</li>
+</ul>
+</li>
+<li><b>Waiting task </b><ul>
+<li>task waiting for CPU availability if another task is currently being executed</li>
+</ul>
+</li>
+<li><b>Active task</b> <ul>
+<li>a task that can potentially execute on the processor, independently of its actual availability</li>
+</ul>
+</li>
+<li><b>Running task</b> <ul>
+<li>the task in execution</li>
+</ul>
+</li>
+<li><b>Ready task</b> <ul>
+<li>a task waiting for the processor</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Why preemption is important?</p>
+<p>In dynamic real-time systems, preemption is important:</p>
+<ul>
+<li>Tasks performing <b> exception handling </b> may need to preempt existing tasks so that responses to exceptions may be issued in a timely fashion</li>
+<li>When tasks have <b> different levels of criticality </b>, preemption permits executing the most critical tasks, as soon as they arrive.</li>
+<li>It allows <b>higher efficiency</b> (executing a real-time task sets with higher processor utilization)</li>
+</ul>
+<p>Limitations of preemption</p>
+<ul>
+<li><b>Preemption destroys program locality</b></li>
+<li>Introduces a runtime overhead that <b>inflates the execution time</b> of tasks</li>
+<li><b>Limiting preemptions</b> in real-time schedules can have <b>beneficial effects</b> in terms of <b>schedulability</b></li>
+</ul>
+<p>Schedule</p>
+<ul>
+<li>A <b>preemptive schedule</b> is a schedule in which the running task can be <b>arbitrarily suspended</b> at any time, to assign the CPU to another task according to a predefined scheduling policy. </li>
+<li><b>Feasible schedule</b>: if all tasks can be completed according to <b>a set of specified constraints</b>.</li>
+<li><b>Schedulable</b>: A set of tasks is <b>said to be schedulable</b> if there exists <b>at least one algorithm</b> that can produce a <b>feasible schedule</b>.</li>
+</ul>
+<hr>
 
       
 
@@ -375,6 +530,15 @@
 
   
 <nav id="article-nav">
+  
+    <a href="/2017/10/24/ELEN90066-Final-Preparation/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
   
   
     <a href="/2017/10/11/ATMEGA16-GAME-CONSOLE-PROJ/" id="article-nav-older" class="article-nav-link-wrap">
