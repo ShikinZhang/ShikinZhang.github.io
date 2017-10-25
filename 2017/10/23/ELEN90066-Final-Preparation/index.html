@@ -18,7 +18,9 @@
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/costfunction.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-1.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/performance-2.png?raw=true">
-<meta property="og:updated_time" content="2017-10-24T23:20:43.702Z">
+<meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDD-feasible.png?raw=true">
+<meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDD-infeasible.png?raw=true">
+<meta property="og:updated_time" content="2017-10-25T00:10:20.458Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELEN90066 Final Preparation">
 <meta name="twitter:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
@@ -516,11 +518,36 @@
 </li>
 </ul>
 <hr>
-<p>Earliest Due Date (EDD)</p>
+<p><b>Earliest Due Date (EDD)</b> </p>
 <p>Assume, all task are activated at time t = 0. <br><br>Each job $J_i$ can be completely characterized by :</p>
 <ul>
 <li>A computation time $C_i$</li>
 <li>Relative deadline $D_i$</li>
+</ul>
+<p><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDD-feasible.png?raw=true" alt=""><br><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDD-infeasible.png?raw=true" alt=""></p>
+<p>We need to show that, in the worst case, all tasks can complete before their deadlines. <br><br>For each task, the worst-case finishing time $f_i$ is less than or equal to its deadline $d_i$:</p>
+<p>$$ \forall _i = 1,2,…,n f_i \leq d_i $$</p>
+<hr>
+<p><b>Earliest Deadline First (EDF)</b></p>
+<p>From the name and lecture slides, I guess it executes task whose deadline is the earliest.</p>
+<hr>
+<p><b>Earliest Deadline First<em> (EDF</em>)</b></p>
+<p>Precedence Constraints</p>
+<ul>
+<li>The problem of scheduling a set of n tasks with precedence constraints and dynamic activations can be solved in polynomial time complexity only if <b>tasks are preemptable</b></li>
+<li>The basic idea of their approach is to transform a set <b>J of dependent tasks</b> into a set <b>J* of independent tasks</b> by an adequate modification of timing parameters</li>
+<li>Basically, all <b>release times</b> and <b>deadlines</b> are modified so that each task cannot start before its predecessors and acnnot preempt their successors.</li>
+</ul>
+<p>Modification of Release time</p>
+<ul>
+<li>Given two tasks $J_a$ and $J_b$, such that $J_a \rightarrow J_b$</li>
+<li><img src="" alt=""></li>
+<li>If $J_a \rightarrow J_b$, then the release time of $J_b$ can be replaced by $max(r_b,r_a + C_a)$. </li>
+<li>In general, $r <em> j ^ * = max(rj,r </em> i ^ * + C _ i)$ when $J_i \rightarrow J_j$</li>
+</ul>
+<p>Modification of Deadlines</p>
+<ul>
+<li>Given two tasks $J_a$ and $J_b$, such that $J_a \rightarrow J_b$</li>
 </ul>
 
       
