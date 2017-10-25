@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDF.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDF-release.png?raw=true">
 <meta property="og:image" content="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDF-deadline.png?raw=true">
-<meta property="og:updated_time" content="2017-10-25T00:37:20.611Z">
+<meta property="og:updated_time" content="2017-10-25T00:47:05.178Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELEN90066 Final Preparation">
 <meta name="twitter:description" content="ELEN90066 …Some points in review, quiz and something I think might be in exam.">
@@ -332,7 +332,7 @@
 <ol>
 <li>Cristian’s Algorithm</li>
 </ol>
-<p>$$ T<em>p = T</em>{server} + \frac{T_1 - T_0}{2} $$</p>
+<p>$$ T <em> p = T </em> {server} + \frac{T_1 - T_0}{2} $$</p>
 <ul>
 <li><b>Elapsed time</b> : $T_1 = T_0$</li>
 <li><b>Timestamp guess</b> : $\frac{T_1 - T_0}{2}$</li>
@@ -547,20 +547,20 @@
 <li>Given two tasks $J_a$ and $J_b$, such that $J_a \rightarrow J_b$</li>
 <li><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDF-release.png?raw=true" alt=""></li>
 <li>If $J_a \rightarrow J_b$, then the release time of $J_b$ can be replaced by $max(r_b,r_a + C_a)$. </li>
-<li>In general, $ r _ j ^ <em> = max(r<em>j,r </em> i ^ </em> + C _ i) $ when $ J_i \rightarrow J_j $</li>
+<li>In general, $ r _ j ^ \star = max(r<em>j,r </em> i ^ \star + C _ i) $ when $ J_i \rightarrow J_j $</li>
 </ul>
 <p>Modification of Deadlines</p>
 <ul>
 <li>Given two tasks $J_a$ and $J_b$, such that $J_a \rightarrow J_b$</li>
 <li><img src="https://github.com/ShikinZhang/ShikinZhang.github.io/blob/master/asset/blogimg/ELEN90066/EDF-deadline.png?raw=true" alt=""></li>
 <li>If $J_a \rightarrow J_b$, then the deadline of $J_a$ can be replaced by $min(d_a,r_a + C_a)$. </li>
-<li>In general, $d _ i ^ <em> = max(d<em>i,d </em> j ^ </em> + C _ j)$ when $J_i \rightarrow J_j$</li>
+<li>In general, $d _ i ^ \satr = max(d<em>i,d </em> j ^ \satr + C _ j)$ when $J_i \rightarrow J_j$</li>
 </ul>
 <p>Optimality Proof</p>
 <ul>
 <li>Show that if there exists a feasible schedule for the modified task set under EDF then the original task set is also schedulable (ignoring precedence relations)</li>
 <li>Show that the original task set meets the timing constraints also schedulable (ignoring precedence relations).</li>
-<li>This can be done by using, $d_i^{*} \leq d_i, r_i^{*} \geq r_i$</li>
+<li>This can be done by using, $d_i^{\star} \leq d_i, r_i^{\star} \geq r_i$</li>
 <li>In addition, show that the precedence relations in the original task set are not violated. In particular, show that<ul>
 <li>a task cannot start before its predecessor </li>
 <li>a task cannot preempt its predecessor</li>
